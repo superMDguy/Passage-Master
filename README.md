@@ -1,4 +1,4 @@
-# Passage-Master
+# Passage Master
 Using Passage Master, you can memorize anything.
 
 ##Installation
