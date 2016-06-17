@@ -1,0 +1,6 @@
+# Passage-Master
+Using Passage Master, you can memorize anything.
+
+##Installation
+Passage Master relies on [json-server](https://www.npmjs.com/package/json-server), which you can install with `npm install json-server`.
+
