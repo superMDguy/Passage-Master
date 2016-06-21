@@ -1,11 +1,10 @@
 import requests, sys, string
 from random import randint
 
-def post_passage(title, text):
+def post_passage(title, text, current_data):
 	headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
-	current_passages = requests.get('http://localhost:3000/passages').json()
-	data = {'id': len(current_passages)+1, 'title': title, 'text': text, 'mastered': 0, 'current passage': 0}
-	r = requests.post("http://localhost:3000/passages", json=data, headers=headers)
+	data = {'id': len(current_data)+1, 'title': title, 'text': text, 'mastered': 0, 'current passage': 0}
+	requests.post("http://localhost:3000/passages", json=data, headers=headers)
 
 def print_passages(current_data):
 	for passage in current_data:
@@ -19,7 +18,7 @@ def add_passage(current_data):
 	print "Please enter the TEXT of your passage"
 	text = raw_input("add >>>")
 	print "Adding your passage..."
-	post_passage(title, text)
+	post_passage(title, text, current_data)
 	print "Passage added!"
 	return requests.get('http://localhost:3000/passages').json()
 
@@ -45,9 +44,8 @@ def settings(current_data):
 	requests.patch('http://localhost:3000/passages/'+str(identifier), change)
 	print "Settings saved"
 	return requests.get('http://localhost:3000/passages').json()
-	
 
-def game(current_data):
+def get_current_passage(current_data):
 	for passage in current_data:
 		if passage['current passage'] == 1:
 			current_passage=passage
@@ -57,7 +55,9 @@ def game(current_data):
 		print "Error: no passage set to memorize.  Redirecting to settings..."
 		settings(current_data)
 		return
-	
+	return current_passage
+
+def game(current_data, current_passage):
 	passage = current_passage['text'].split(" ")
 	for i in range(1, 10):
 		index = randint(1, len(passage)-2)
@@ -71,6 +71,22 @@ def game(current_data):
 		else:
 			print "Nope, it's actually " + passage[index] + "."
 	print "Good job!"
+
+def review(current_data):
+	min_reviewed = 0
+	needs_reviewing = None
+	for passage in current_data:
+		times_reviewed = passage['reviewed']
+		if times_reviewed <= min_reviewed:
+			min_reviewed = times_reviewed
+			needs_reviewing = passage
+
+	if needs_reviewing is None: print "Error!"
+	game(current_data, needs_reviewing)
+	change = {"reviewed": min_reviewed+1}
+	requests.patch('http://localhost:3000/passages/'+str(needs_reviewing['id']), change)
+
+
 
 def print_commands():
 	print "Type 'passages' to get a list of passages"
@@ -96,8 +112,8 @@ while True:
 	elif command == "settings":
 		data = settings(data)
 	elif command == "game":
-		game(data)
+		game(data, get_current_passage(data))
 	elif command == "review":
-		print "Coming soon!"
+		review(data)
 	elif command == "commands":
 		print_commands()
