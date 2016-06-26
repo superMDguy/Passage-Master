@@ -1,12 +1,44 @@
 {
   "passages": [
     {
-      "id": 1,
-      "title": "Title of Passage here",
-      "text": "Text of Passage Here",
       "mastered": 0,
+      "text": "And now, my sons, remember, remember that it is upon the rock of our Redeemer, who is Christ, the Son of God, that ye must build your foundation; that when the devil shall send forth his mighty winds, yea, his shafts in the whirlwind, yea, when all his hail and his mighty storm shall beat upon you, it shall have no power over you to drag you down to the gulf of misery and endless wo, because of the rock upon which ye are built, which is a sure foundation, a foundation whereon if men build they cannot fall.",
+      "id": 1,
+      "current passage": 1,
       "reviewed": 0,
-      "current passage": 1
+      "title": "Helaman 5:12"
+    },
+    {
+      "mastered": 0,
+      "text": "Cease to be idle; cease to be unclean; cease to find fault one with another; cease to sleep longer than is needful; retire to thy bed early, that ye may not be weary; arise early, that your bodies and your minds may be invigorated.",
+      "id": 2,
+      "current passage": 0,
+      "reviewed": 0,
+      "title": "D&C 88:124"
+    },
+    {
+      "mastered": 0,
+      "text": "And behold, he shall be born of Mary, at Jerusalem which is the land of our forefathers, she being a virgin, a precious and chosen vessel, who shall be overshadowed and conceive by the power of the Holy Ghost, and bring forth a son, yea, even the Son of God.",
+      "id": 3,
+      "current passage": 0,
+      "reviewed": 0,
+      "title": "Alma 7:10"
+    },
+    {
+      "mastered": 0,
+      "text": "And whatsoever they shall speak when moved upon by the Holy Ghost shall be scripture, shall be the will of the Lord, shall be the mind of the Lord, shall be the word of the Lord, shall be the voice of the Lord, and the power of God unto salvation.",
+      "id": 4,
+      "current passage": 0,
+      "reviewed": 0,
+      "title": "D&C 68:4"
+    },
+    {
+      "mastered": 0,
+      "text": "Behold, this is not my doctrine, to stir up the hearts of men with anger, one against another; but this is my doctrine, that such things should be done away.",
+      "id": 5,
+      "current passage": 0,
+      "reviewed": 1,
+      "title": "3 Nephi 11:30"
     }
   ]
 }
