@@ -3,7 +3,7 @@ from random import randint
 
 def post_passage(title, text, current_data):
 	headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
-	data = {'id': len(current_data)+1, 'title': title, 'text': text, 'mastered': 0, 'current passage': 0}
+	data = {'id': len(current_data)+1, 'title': title, 'text': text, 'mastered': 0, 'current passage': 0, 'reviewed':0}
 	requests.post("http://localhost:3000/passages", json=data, headers=headers)
 
 def print_passages(current_data):
@@ -58,19 +58,19 @@ def get_current_passage(current_data):
 	return current_passage
 
 def game(current_data, current_passage):
-	passage = current_passage['text'].split(" ")
+	passage = current_passage['text'].split(" ")	#Convert the passage to a list of words
 	for i in range(1, 10):
-		index = randint(1, len(passage)-2)
+		index = randint(1, len(passage)-2)	#Generate a random index
 		for word in passage[:index]:
-			sys.stdout.write(word + " ")
+			sys.stdout.write(word + " ")	#Print the words up to the index in the passage
 		sys.stdout.write("\n")
 		guess = raw_input("What's the next word? >>>")
-		correct_answer = str(passage[index]).translate(string.maketrans("",""), string.punctuation)
+		correct_answer = str(passage[index]).translate(string.maketrans("",""), string.punctuation) #Ignore Punctuation
 		if guess == correct_answer:
 			print "Correct!"
 		else:
 			print "Nope, it's actually " + passage[index] + "."
-	print "Good job!"
+	print "Great job!"
 
 def review(current_data):
 	min_reviewed = 0
