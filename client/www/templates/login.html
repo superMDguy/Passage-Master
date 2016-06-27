@@ -1,23 +1,21 @@
 <ion-modal-view>
-  <ion-header-bar>
-    <h1 class="title">Login</h1>
+  <ion-header-bar class = "heading">
+    <h1 class="title">Add Passage</h1>
     <div class="buttons">
       <button class="button button-clear" ng-click="closeLogin()">Close</button>
     </div>
   </ion-header-bar>
   <ion-content>
-    <form ng-submit="doLogin()">
+    <form ng-submit="addPassage()">
       <div class="list">
         <label class="item item-input">
-          <span class="input-label">Username</span>
-          <input type="text" ng-model="loginData.username">
+          <input type="text" placeholder = "Passage Title" ng-model="passageData.title">
         </label>
         <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="password" ng-model="loginData.password">
+          <textarea placeholder="Text" ng-model="passageData.text"></textarea>
         </label>
         <label class="item">
-          <button class="button button-block button-positive" type="submit">Log in</button>
+          <button class="button button-block button-positive" type="submit">Add Passage</button>
         </label>
       </div>
     </form>

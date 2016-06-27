@@ -1,1 +1,10 @@
 /* Empty. Add your own CSS if you like */
+.heading {
+	background-color: #90DDCE;
+	color: white;
+	font-family: 'Alegreya Sans', sans-serif;
+}
+
+ion-content {
+	margin: 6%;
+}
