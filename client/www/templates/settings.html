@@ -1,0 +1,16 @@
+<ion-view view-title = "Settings">
+  <ion-nav-bar class="heading"></ion-nav-bar>
+  <ion-content>
+    <form ng-submit="changePassage()">
+    <label class="item item-input item-select">Setting
+
+    <select ng-model="data.newCurrentPassage">
+      <option selected>Select a passage...</option>
+      <option ng-repeat="passage in passages" value = {{passage.id}}> {{passage.title}}</option>
+    </select>
+  </label>
+     <label class="item">
+          <button class="button button-block button-positive" type="submit">Change Current Passage</button>
+      </label>
+  </ion-content>
+</ion-view>

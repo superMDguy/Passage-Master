@@ -1,9 +1,14 @@
-<ion-view view-title="Passages">
+<ion-view cache-view = "false" view-title="Passages">
 	<ion-nav-bar class="heading"></ion-nav-bar>
   <ion-content>
     <ion-list>
       <ion-item ng-repeat="passage in passages" href="#/app/passages/{{passage.id}}">
+      <b ng-if = "passage.currentPassage==true">
         {{passage.title}}
+        </b>
+       <div ng-if = "passage.currentPassage != true">
+       {{passage.title}}
+       </div>
       </ion-item>
     </ion-list>
   </ion-content>

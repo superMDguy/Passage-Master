@@ -29,7 +29,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
-    controller: 'AppCtrl'
+    controller: 'addCtrl'
   })
 
   .state('app.search', {
@@ -41,14 +41,26 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   })
 
-  .state('app.browse', {
-      url: '/browse',
+  .state('app.addPassage', {
+      url: '/addPassage',
       views: {
         'menuContent': {
-          templateUrl: 'templates/browse.html'
+          templateUrl: 'templates/addPassage.html',
+          controller: 'addCtrl'
         }
       }
     })
+
+  .state('app.settings', {
+      url: '/settings',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/settings.html',
+          controller: 'settingsCtrl'
+        }
+      }
+    })
+
     .state('app.passages', {
       url: '/passages',
       views: {
