@@ -17,14 +17,14 @@ angular.module('starter.controllers', [])
 	// Perform the add passage action when the user submits the form
 	$scope.addPassage = function() {
 
-		$http.get('http://192.168.1.118:3000/passages')
+		$http.get('https://passagemaster.localtunnel.me/passages')
 			.then(function (response) {
 			
 				var data = {'id': (response.data.length+1), 'title': $scope.passageData.title, 'text': $scope.passageData.text,
 			 		'mastered': 0, 'currentPassage': 0, 'reviewed':0}
 
 			 	console.log('Adding passage', data);
-				$http.post("http://localhost:3000/passages", data)
+				$http.post("https://passagemaster.localtunnel.me/passages", data)
 			})
 			.catch(function (err) {
 				console.error('Problem getting passages');
@@ -41,7 +41,7 @@ angular.module('starter.controllers', [])
 .controller('settingsCtrl', function($scope, $state, $window, $http) {
 	$scope.data = {};
 
-	$http.get('http://192.168.1.118:3000/passages')
+	$http.get('https://passagemaster.localtunnel.me/passages')
 	.then(function (response) {
 		console.log(response);
 		$scope.passages = response.data;
@@ -57,10 +57,10 @@ angular.module('starter.controllers', [])
 		for (var i = 0; i<$scope.passages.length; i++) {
 			var passage = $scope.passages[i];
 			change = {"currentPassage": 0}
-			$http.patch('http://localhost:3000/passages/'+passage.id, change);
+			$http.patch('https://passagemaster.localtunnel.me/passages/'+passage.id, change);
 		}
 		change = {"currentPassage": 1}
-		$http.patch('http://localhost:3000/passages/'+$scope.data.newCurrentPassage, change).then(function(response) {
+		$http.patch('https://passagemaster.localtunnel.me/passages/'+$scope.data.newCurrentPassage, change).then(function(response) {
 			console.log(response);
 			$state.go("app.passages");
 			$window.location.reload()
@@ -71,7 +71,7 @@ angular.module('starter.controllers', [])
 
 .controller('gameStartCtrl', function($scope, $state, $http) {
 	$scope.playGame =function() {
-		$http.get('http://192.168.1.118:3000/passages')
+		$http.get('https://passagemaster.localtunnel.me/passages')
 		.then(function (response) {
 			console.log(response);
 			var passages = response.data;
@@ -90,7 +90,7 @@ angular.module('starter.controllers', [])
 	}
 
 	$scope.review =function() {
-		$http.get('http://192.168.1.118:3000/passages')
+		$http.get('https://passagemaster.localtunnel.me/passages')
 		.then(function (response) {
 			console.log(response);
 			var passages = response.data;
@@ -124,7 +124,7 @@ angular.module('starter.controllers', [])
 	$scope.game = {};
 	$scope.words = [];
 	$scope.data = {};
-	$http.get('http://192.168.1.118:3000/passages/'+$stateParams.passageId)
+	$http.get('https://passagemaster.localtunnel.me/passages/'+$stateParams.passageId)
 		.then(function (response) {
 			console.log(response);
 			$scope.passage = response.data;
@@ -149,7 +149,7 @@ angular.module('starter.controllers', [])
 			var change = {"reviewed": $scope.passage.reviewed+1};
 			$scope.passage.reviewed ++;
 		}
-		$http.patch('http://localhost:3000/passages/'+$scope.passage.id, change);
+		$http.patch('https://passagemaster.localtunnel.me/passages/'+$scope.passage.id, change);
 
 	}
 })
@@ -158,7 +158,7 @@ angular.module('starter.controllers', [])
 .controller('passagesCtrl', function($scope, $http) {
 
 		
-		$http.get('http://192.168.1.118:3000/passages')
+		$http.get('https://passagemaster.localtunnel.me/passages')
 		.then(function (response) {
 			console.log(response);
 			$scope.passages = response.data;
@@ -174,7 +174,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('passageCtrl', function($scope, $stateParams, $http) {
-	$http.get('http://192.168.1.118:3000/passages/'+$stateParams.passageId)
+	$http.get('https://passagemaster.localtunnel.me/passages/'+$stateParams.passageId)
 		.then(function (response) {
 			console.log(response);
 			$scope.passage = response.data;
