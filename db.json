@@ -4,15 +4,15 @@
       "mastered": 0,
       "text": "Cease to be idle; cease to be unclean; cease to find fault one with another; cease to sleep longer than is needful; retire to thy bed early, that ye may not be weary; arise early, that your bodies and your minds may be invigorated.",
       "id": 1,
-      "currentPassage": 1,
-      "reviewed": 0,
+      "currentPassage": 0,
+      "reviewed": 1,
       "title": "D&C 88:124"
     },
     {
       "mastered": 0,
       "text": "And behold, he shall be born of Mary, at Jerusalem which is the land of our forefathers, she being a virgin, a precious and chosen vessel, who shall be overshadowed and conceive by the power of the Holy Ghost, and bring forth a son, yea, even the Son of God.",
       "id": 2,
-      "currentPassage": 1,
+      "currentPassage": 0,
       "reviewed": 0,
       "title": "Alma 7:10"
     },
@@ -31,6 +31,14 @@
       "mastered": 0,
       "currentPassage": 1,
       "reviewed": 0
+    },
+    {
+      "id": 5,
+      "title": "The Golden Rule",
+      "text": "Do unto others as you would have others do unto you.",
+      "mastered": 0,
+      "currentPassage": 0,
+      "reviewed": 23
     }
   ]
 }

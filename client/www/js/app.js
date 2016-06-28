@@ -32,11 +32,22 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     controller: 'addCtrl'
   })
 
-  .state('app.search', {
-    url: '/search',
+  .state('app.gameStart', {
+    url: '/gameStart',
     views: {
       'menuContent': {
-        templateUrl: 'templates/search.html'
+        templateUrl: 'templates/gameStart.html',
+        controller: 'gameStartCtrl'
+      }
+    }
+  })
+
+  .state('app.game', {
+    url: '/game/:passageId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/playGame.html',
+        controller: 'gameCtrl'
       }
     }
   })

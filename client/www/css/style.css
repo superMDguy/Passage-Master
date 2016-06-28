@@ -3,13 +3,13 @@
 
 /* Custom nav bar */
 .bar {
-	background-color: #90DDCE;
+	background-color: #12B28F;
 }
 .bar .title {
 	/*margin: 0 0 0 0;*/
 	color: white;
-	font-family: 'Alegreya Sans', sans-serif;
-	font-size: 30px;
+	font-family: 'Cinzel', serif;
+	font-size: 1.6em;
 }
 .bar .button.back-button, .bar button.back-button {
 	color: white;
@@ -21,10 +21,23 @@
 
 /* Custom button syles */
 .button.button-positive {
-	background-color: pink;
+	background-color: #12B28F;
+}
+.button.button-positive.activated{
+	background-color: #EF19FF;
 }
 
+/* Custom menu  */
+ion-side-menu .item {
+	color: white;
+}
+ion-side-menu .item-complex .item-content {
+	background-color: #B28A09;
+}
 
+ion-content {
+	font-family: 'Cinzel', serif;
+}
 .passage-body {
 	margin: 6%;
 }
