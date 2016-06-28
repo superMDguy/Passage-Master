@@ -52,7 +52,6 @@ angular.module('starter.controllers', [])
 	})
 	;
 
-
 	$scope.changePassage = function() {
 		for (var i = 0; i<$scope.passages.length; i++) {
 			var passage = $scope.passages[i];

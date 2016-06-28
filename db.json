@@ -4,8 +4,8 @@
       "mastered": 0,
       "text": "Cease to be idle; cease to be unclean; cease to find fault one with another; cease to sleep longer than is needful; retire to thy bed early, that ye may not be weary; arise early, that your bodies and your minds may be invigorated.",
       "id": 1,
-      "currentPassage": 0,
-      "reviewed": 1,
+      "currentPassage": 1,
+      "reviewed": 6,
       "title": "D&C 88:124"
     },
     {
@@ -29,7 +29,7 @@
       "title": "Moroni 7:45",
       "text": "And charity suffereth long, and is kind, and envieth not, and is not puffed up, seeketh not her own, is not easily provoked, thinketh no evil, and rejoiceth not in iniquity but rejoiceth in the truth, beareth all things, believeth all things, hopeth all things, endureth all things.",
       "mastered": 0,
-      "currentPassage": 1,
+      "currentPassage": 0,
       "reviewed": 0
     },
     {
@@ -38,7 +38,7 @@
       "text": "Do unto others as you would have others do unto you.",
       "mastered": 0,
       "currentPassage": 0,
-      "reviewed": 23
+      "reviewed": 29
     }
   ]
 }

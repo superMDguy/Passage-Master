@@ -33,11 +33,9 @@ ion-side-menu .item {
 }
 ion-side-menu .item-complex .item-content {
 	background-color: #B28A09;
-}
-
-ion-content {
 	font-family: 'Cinzel', serif;
 }
+
 .passage-body {
 	margin: 6%;
 }
