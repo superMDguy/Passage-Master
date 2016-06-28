@@ -1,10 +1,30 @@
 /* Empty. Add your own CSS if you like */
-.heading {
+
+
+/* Custom nav bar */
+.bar {
 	background-color: #90DDCE;
+}
+.bar .title {
+	/*margin: 0 0 0 0;*/
 	color: white;
 	font-family: 'Alegreya Sans', sans-serif;
+	font-size: 30px;
+}
+.bar .button.back-button, .bar button.back-button {
+	color: white;
+}
+.bar .buttons span.back-text {
+	display: none; /* Don't want "Back" on back button */
 }
 
-ion-content {
+
+/* Custom button syles */
+.button.button-positive {
+	background-color: pink;
+}
+
+
+.passage-body {
 	margin: 6%;
 }
