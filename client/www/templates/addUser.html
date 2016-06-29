@@ -1,0 +1,19 @@
+<ion-view title = "Add User">
+  <ion-nav-bar>
+	<ion-nav-buttons side="left">
+		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+	</ion-nav-buttons> 
+	</ion-nav-bar>
+  <ion-content>
+    <form ng-submit="addUser()">
+      
+        <label class="item item-input">
+          <input type="text" placeholder = "Username" ng-model="userData.name">
+        </label>
+        <label class="item">
+          <button class="button button-block button-positive" type="submit">Add User</button>
+        </label>
+      
+    </form>
+  </ion-content>
+</ion-view>

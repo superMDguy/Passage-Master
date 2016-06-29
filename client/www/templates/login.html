@@ -1,0 +1,20 @@
+<ion-view title = "Login">
+	<ion-nav-bar>
+	<ion-nav-buttons side="left">
+		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+	</ion-nav-buttons> 
+	</ion-nav-bar>
+	<ion-content>
+		<form ng-submit="login()">
+			<label class="item item-input item-select">Username
+				<select ng-model="data.userID">
+					<option ng-repeat="user in users" value = {{user.id}}> {{user.name}}</option>
+				</select>
+			</label>
+
+			<label class="item">
+				<button class="button button-block button-positive" type="submit">Login</button>
+			</label>
+		</form>
+	</ion-content>
+</ion-view>

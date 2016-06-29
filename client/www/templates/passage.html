@@ -1,4 +1,4 @@
-<ion-view view-title="{{passage.title}}">
+<ion-view view-title="{{passage.title}}" cache-view="false">
 
 	<ion-nav-bar>
 		<ion-nav-back-button>
@@ -6,7 +6,12 @@
 	</ion-nav-bar>
 
 	<ion-content class="passage-body">
-		<p>{{passage.text}}</p>
+	<p>{{passage.text}}</p>
+	<p>Times reviewed: {{passage.reviewed}}</p>
+	<p>This passage is <b ng-if="!mastered">not</b> mastered</p>
+	<label class="item">
+		<button class="button button-block button-positive" ng-click = "review()" type="submit">Review this Passage</button>
+	</label>
 	</ion-content>
-
+	
 </ion-view>

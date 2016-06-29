@@ -1,15 +1,19 @@
-<ion-view cache-view = "false" view-title="Passages">
-	<ion-nav-bar></ion-nav-bar>
-  <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="passage in passages" href="#/app/passages/{{passage.id}}">
-      <b ng-if = "passage.currentPassage==true">
-        {{passage.title}}
-        </b>
-       <div ng-if = "passage.currentPassage != true">
-       {{passage.title}}
-       </div>
-      </ion-item>
-    </ion-list>
-  </ion-content>
+<ion-view view-title="Passages" cache-view = "false">
+	<ion-nav-bar>
+		<ion-nav-buttons side="left">
+			<button menu-toggle="left" enable-menu-with-back-views="true" class="button button-icon icon ion-navicon"></button>
+		</ion-nav-buttons> 
+	</ion-nav-bar>
+	<ion-content>
+		<ion-list>
+			<ion-item ng-repeat="passage in passages" href="#/app/passages/{{passage.id}}">
+			<b ng-if = "passage.currentPassage==true">
+				{{passage.title}}
+				</b>
+			 <div ng-if = "passage.currentPassage != true">
+			 {{passage.title}}
+			 </div>
+			</ion-item>
+		</ion-list>
+	</ion-content>
 </ion-view>

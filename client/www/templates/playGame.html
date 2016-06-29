@@ -10,7 +10,7 @@
 			<input type="text" placeholder = "What's the next word?" ng-model="data.answer">
 			
 		</label>
-		<label class="item" ng-if="data.answer == game.correctAnswer">
+		<label class="item" ng-if="data.answer.toLowerCase() == game.correctAnswer">
           <button class="button button-block button-positive" ng-click = "nextQuestion()" type="submit" >Continue</button>
         </label>
 	</ion-content>

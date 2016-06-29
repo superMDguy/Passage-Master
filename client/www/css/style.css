@@ -17,14 +17,16 @@
 .bar .buttons span.back-text {
 	display: none; /* Don't want "Back" on back button */
 }
-
+.button{
+	color: white;
+}
 
 /* Custom button syles */
 .button.button-positive {
 	background-color: #12B28F;
 }
 .button.button-positive.activated{
-	background-color: #EF19FF;
+	background-color: #B28A09;
 }
 
 /* Custom menu  */
@@ -33,7 +35,6 @@ ion-side-menu .item {
 }
 ion-side-menu .item-complex .item-content {
 	background-color: #B28A09;
-	font-family: 'Cinzel', serif;
 }
 
 .passage-body {

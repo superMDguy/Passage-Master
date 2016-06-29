@@ -29,7 +29,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
-    controller: 'addCtrl'
+    controller: 'menuCtrl'
   })
 
   .state('app.gameStart', {
@@ -53,11 +53,31 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   })
 
   .state('app.addPassage', {
-      url: '/addPassage',
+      url: '/admin/addPassage',
       views: {
         'menuContent': {
           templateUrl: 'templates/addPassage.html',
           controller: 'addCtrl'
+        }
+      }
+    })
+
+  .state('app.login', {
+      url: '/login',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/login.html',
+          controller: 'loginCtrl'
+        }
+      }
+    })
+
+  .state('app.addUser', {
+      url: '/admin/addUser',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/addUser.html',
+          controller: 'addUserCtrl'
         }
       }
     })
