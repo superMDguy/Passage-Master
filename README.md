@@ -1,7 +1,7 @@
 # Passage Master
 Using Passage Master, you can memorize anything.
 
-##Installation
+##Usage
 Passage Master relies on [json-server](https://www.npmjs.com/package/json-server), which you can install with `npm install json-server`.
-To start the app, first start the server with `json-server db.json`, then start the commandn line interface with `python cli.py`.
+To start the app, navigate to the root directory of the project, and run `json-server db.json --static ./client/www`.  Then, go to `localhost:3000` in a web browser.
 
