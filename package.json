@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/superMDguy/Passage-Master/issues"
   },
-  "homepage": "https://github.com/superMDguy/Passage-Master#readme"
+  "homepage": "https://github.com/superMDguy/Passage-Master#readme",
+  "dependencies": {
+    "aws-sdk": "^2.7.25"
+  }
 }
