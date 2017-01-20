@@ -10,7 +10,7 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 
 console.log("Importing passages into DynamoDB. Please wait.");
 
-var allPassages = JSON.parse(fs.readFileSync('passages.json', 'utf8'));
+var allPassages = JSON.parse(fs.readFileSync('passages.json', 'utf8')).passages;
 allPassages.forEach(function(passage) {
     var params = {
         TableName: "Passages",
