@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/superMDguy/Passage-Master#readme",
   "dependencies": {
-    "aws-sdk": "^2.7.25"
+    "aws-sdk": "^2.7.25",
+    "express": "^4.14.0"
   }
 }

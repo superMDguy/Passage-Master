@@ -15,7 +15,7 @@ angular.module('starter.controllers', [])
 	;
 
 	$scope.login = function() {
-		for (var i = 0; i<$scope.users.length; i++){
+		for (var i = 0; i < $scope.users.length; i++){
 			var user = $scope.users[i];
 			if(user.id == $scope.data.userID) {
 				$scope.username = user.name;
@@ -248,5 +248,5 @@ angular.module('starter.controllers', [])
 
 	$scope.review = function() {
 		$state.go('app.game', {'passageId' : $scope.passage.id});
-	}
+	};
 });
