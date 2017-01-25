@@ -19,11 +19,7 @@
 		</ion-header-bar>
 		<ion-content>
 			<ion-list>
-			<ion-item menu-close href="#/app/login">
-					<span ng-if = "user.username == null">Login</span>
-					<span ng-if = "user.username != null">Hello, {{user.username}}</span>
-				</ion-item>
-				<ion-item menu-close href="#/app/admin/addPassage" ng-if = "user.username == 'admin'">
+				<ion-item menu-close href="#/app/addPassage" >
 					Add Passage
 				</ion-item>
 				<ion-item menu-close href="#/app/gameStart">
@@ -34,9 +30,6 @@
 				</ion-item>
 				<ion-item menu-close href="#/app/passages">
 					Passages
-				</ion-item>
-				<ion-item menu-close href="#/app/admin/addUser" ng-if = "user.username == 'admin'">
-					Add User
 				</ion-item>
 			</ion-list>
 		</ion-content>

@@ -13,11 +13,9 @@ var params = {
     TableName : "Passages",
     KeySchema: [       
         { AttributeName: "id", KeyType: "HASH"},  //Partition key
-        { AttributeName: "title", KeyType: "RANGE" },  //Sort key
     ],
     AttributeDefinitions: [       
         { AttributeName: "id", AttributeType: "N" },
-        { AttributeName: "title", AttributeType: "S" },
     ],
     ProvisionedThroughput: {       
         ReadCapacityUnits: 10, 

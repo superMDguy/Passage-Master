@@ -53,7 +53,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   })
 
   .state('app.addPassage', {
-      url: '/admin/addPassage',
+      url: '/addPassage',
       views: {
         'menuContent': {
           templateUrl: 'templates/addPassage.html',
@@ -73,7 +73,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     })
 
   .state('app.addUser', {
-      url: '/admin/addUser',
+      url: '/addUser',
       views: {
         'menuContent': {
           templateUrl: 'templates/addUser.html',

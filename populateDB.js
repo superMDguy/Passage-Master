@@ -17,7 +17,10 @@ allPassages.forEach(function(passage) {
         Item: {
             "id":  passage.id,
             "title": passage.title,
-            "text":  passage.text
+            "text":  passage.text,
+            "mastered": passage.mastered,
+            "currentPassage": passage.currentPassage,
+            "reviewed": passage.reviewed,
         }
     };
 
