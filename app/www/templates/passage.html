@@ -9,9 +9,10 @@
 	<p>{{passage.text}}</p>
 	<p>Times reviewed: {{passage.reviewed}}</p>
 	<p>This passage is <b ng-if="!mastered">not</b> mastered</p>
-	<label class="item">
+	<div class="item">
 		<button class="button button-block button-positive" ng-click = "review()" type="submit">Review this Passage</button>
-	</label>
+		<button class="button button-block button-assertive" ng-click = "showConfirm()" type="submit">Delete this Passage</button>
+	</div>
 	</ion-content>
 	
 </ion-view>

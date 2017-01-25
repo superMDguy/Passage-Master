@@ -1,10 +1,13 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var AWS = require("aws-sdk");
 
 var app = express();
 
 app.use(express.static('client'));
 app.use(express.static('app/www'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
     res.sendFile(__dirname + "/" + "client/index.html");
@@ -44,9 +47,23 @@ app.get('/passages', (req, res) => {
     });
 });
 
-// app.post('/passages', function(req, res) {
-//     console.log(req);
-// });
+app.post('/passages', function(req, res) {
+    var passage = req.body;
+
+    var params = {
+        TableName: "Passages",
+        Item: passage
+    };
+
+    docClient.put(params, function(err, data) {
+        if (err) {
+            console.error("Unable to add passage", passage.title, ". Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("PutItem succeeded:", passage.title);
+            res.send(200);
+        }
+    });
+});
 
 app.get('/passages/:id', (req, res) => {
     var id = Number(req.params.id);
@@ -69,3 +86,47 @@ app.get('/passages/:id', (req, res) => {
         }
     });
 });
+
+app.delete('/passages/:id', (req, res) => {
+    var id = Number(req.params.id);
+
+    var params = {
+        TableName: 'Passages',
+        Key: {
+            'id': id,
+        }
+    }
+
+    console.log("Deleting passage " + id)
+    docClient.delete(params, function(err, data) {
+        if (err) {
+            console.error("Unable to get item. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("Success!");
+            res.send(200);
+        }
+    });
+})
+
+app.patch('/setCurrentPassage/:id', (req, res) => {
+    var id = Number(req.params.id);
+
+    var params = {
+        TableName: 'Passages',
+        Key: {
+            'id': id,
+        },
+        ConditionExpression: "this.currentPassage = 1",
+        UpdateExpression: "set this.currentPassage = 0",
+    }
+
+    console.log("Attempting a conditional update...");
+    docClient.update(params, function(err, data) {
+        if (err) {
+            console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+            res.send(200);
+        }
+    });
+})
