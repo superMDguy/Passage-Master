@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/superMDguy/Passage-Master#readme",
   "dependencies": {
+    "auth0-lock": "^10.10.2",
     "aws-sdk": "^2.8.0",
     "body-parser": "^1.16.0",
     "express": "^4.14.0",

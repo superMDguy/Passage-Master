@@ -48,16 +48,17 @@ app.post('/auth/google/callback', (req, res) => {
                 TableName: payload.sub.toString()
             };
 
-            dynamodb.waitFor('tableExists', params).promise()
-                .then((response) => {
-                    console.log("sending status")
-                    res.sendStatus(200);
-                })
-                .catch((err) => {
-                    console.error(err);
-                })
-
-            createDB.createDB(payload.sub);
+            setInterval(() => {
+                dynamodb.describeTable(params, function(err, data) {
+                    if (err) {
+                        createDB.createDB(payload.sub);
+                    }
+                    else if (data.Table.TableStatus == "ACTIVE") {
+                        return;
+                    }
+                });
+            }, 1000);
+             res.sendStatus(200);
         });
 
 
