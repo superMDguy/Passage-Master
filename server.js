@@ -1,13 +1,27 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var AWS = require("aws-sdk");
+let express = require('express');
+let bodyParser = require('body-parser');
+let AWS = require("aws-sdk");
+let path = require('path');
+let session = require('express-session');
+let GoogleAuth = require('google-auth-library');
 
-var app = express();
+let createDB = require('./createDB')
+
+const CLIENT_ID = "236526742648-j6iavch8oqjb89ar32esdpreu4p7tm9n.apps.googleusercontent.com"
+
+AWS.config.setPromisesDependency(null);
+
+let app = express();
 
 app.use(express.static('client'));
 app.use(express.static('app/www'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(session({
+    resave: true,
+    secret: 'secret thing',
+    saveUninitialized: false,
+}))
 
 app.get('/', function(req, res) {
     res.sendFile(__dirname + "/" + "client/index.html");
@@ -17,9 +31,42 @@ app.get('/app/', function(req, res) {
     res.sendFile(__dirname + "/" + "app/www/index.html");
 });
 
-var server = app.listen(8081, function() {
-    var host = server.address().address;
-    var port = server.address().port;
+let auth = new GoogleAuth;
+let client = new auth.OAuth2(CLIENT_ID, '', '');
+
+function authorizeUser(userID) {
+    create
+}
+app.post('/auth/google/callback', (req, res) => {
+    var id_token = req.body.id_token;
+    client.verifyIdToken(id_token, CLIENT_ID,
+        function(e, login) {
+            var payload = login.getPayload();
+            req.session.user = payload;
+
+            let params = {
+                TableName: payload.sub.toString()
+            };
+
+            dynamodb.waitFor('tableExists', params).promise()
+                .then((response) => {
+                    res.sendStatus(200);
+                })
+                .catch((err) => {
+                    console.error(err);
+                })
+
+            //createDB.createDB(payload.sub);
+        });
+
+
+
+
+});
+
+let server = app.listen(8081, function() {
+    let host = server.address().address;
+    let port = server.address().port;
 
     console.log(`App listening at http://${host}:${port}`)
 
@@ -30,11 +77,12 @@ AWS.config.update({
     endpoint: "https://dynamodb.us-west-2.amazonaws.com/"
 });
 
-var docClient = new AWS.DynamoDB.DocumentClient();
+let docClient = new AWS.DynamoDB.DocumentClient();
+let dynamodb = new AWS.DynamoDB();
 
 app.get('/passages', (req, res) => {
-    var params = {
-        TableName: "Passages"
+    let params = {
+        TableName: req.session.user.sub
     };
     console.log("Getting passages...");
     docClient.scan(params, function(err, data) {
@@ -48,10 +96,10 @@ app.get('/passages', (req, res) => {
 });
 
 app.post('/passages', function(req, res) {
-    var passage = req.body;
+    let passage = req.body;
 
-    var params = {
-        TableName: "Passages",
+    let params = {
+        TableName: req.session.user.sub,
         Item: passage
     };
 
@@ -66,10 +114,10 @@ app.post('/passages', function(req, res) {
 });
 
 app.get('/passages/:id', (req, res) => {
-    var id = Number(req.params.id);
+    let id = Number(req.params.id);
 
-    var params = {
-        TableName: "Passages",
+    let params = {
+        TableName: req.session.user.sub,
         Key: {
             "id": id
         }
@@ -88,9 +136,9 @@ app.get('/passages/:id', (req, res) => {
 });
 
 app.delete('/passages/:id', (req, res) => {
-    var id = Number(req.params.id);
+    let id = Number(req.params.id);
 
-    var params = {
+    let params = {
         TableName: 'Passages',
         Key: {
             'id': id,
@@ -109,11 +157,11 @@ app.delete('/passages/:id', (req, res) => {
 })
 
 app.patch('/setCurrentPassage/:id', (req, res) => {
-    var id = Number(req.params.id);
-    var passages;
+    let id = Number(req.params.id);
+    let passages;
 
-    var allParams = {
-        TableName: "Passages"
+    let allParams = {
+        TableName: req.session.user.sub
     };
 
     console.log("Getting passages...");
@@ -123,9 +171,10 @@ app.patch('/setCurrentPassage/:id', (req, res) => {
             console.error("Unable to scan items. Error JSON:", JSON.stringify(err, null, 2));
         } else {
             console.log("Success!");
-            data.Items.forEach(passage => {
-                var isCurrentPassage = 1 ? passage.id == id : 0;
-                var params = {
+            var databasePromises = [];
+            data.Items.map(function(passage) {
+                let isCurrentPassage = 1 ? passage.id == id : 0;
+                let params = {
                     TableName: 'Passages',
                     Key: {
                         'id': passage.id
@@ -136,15 +185,16 @@ app.patch('/setCurrentPassage/:id', (req, res) => {
                     },
                 }
 
-                docClient.update(params, function(err, data) {
-                    if (err) {
-                        console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
-                    } else {
-                        console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
-                    }
-                });
+                databasePromises.push(docClient.update(params).promise());
             });
-            res.sendStatus(200);
+            Promise.all(databasePromises)
+                .then(responses => {
+                    res.sendStatus(200);
+                })
+                .catch(err => {
+                    console.error('Problem in DB calls');
+                    res.sendStatus(500);
+                });
         }
     });
 

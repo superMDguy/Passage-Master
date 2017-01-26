@@ -12,6 +12,10 @@
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+
+		 <meta name="google-signin-scope" content="profile email">
+		<meta name="google-signin-client_id" content="236526742648-j6iavch8oqjb89ar32esdpreu4p7tm9n.apps.googleusercontent.com">
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
 	</head>
 	<body>
 
@@ -20,7 +24,7 @@
 				<h2><strong>Passage Master</strong></h2>
 				<p>Memorize anything.</p>
 				<ul class="actions">
-					<li><a href="app" class="button special">Get started</a></li>
+					<center><div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div></center>
 				</ul>
 			</section>
 
@@ -88,6 +92,30 @@
 			<script src="assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
+			<script>
+				function onSignIn(googleUser) {
+					var profile = googleUser.getBasicProfile();
+
+					var id_token = googleUser.getAuthResponse().id_token;
+					console.log("ID Token: " + id_token);
+				
+					var url = "auth/google/callback";
+					var params = "id_token=" + id_token;
+					var xhr = new XMLHttpRequest();
+					xhr.open("POST", url, true);
+
+					xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+					xhr.send(params);
+
+					xhr.onreadystatechange = function() {
+						if (xhr.readyState==4 && xhr.status==200)
+						{
+							window.location = '/app';
+						}
+					}
+				};
+    	</script>
 
 	</body>
 </html>
