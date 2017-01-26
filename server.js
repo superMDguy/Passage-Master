@@ -50,13 +50,14 @@ app.post('/auth/google/callback', (req, res) => {
 
             dynamodb.waitFor('tableExists', params).promise()
                 .then((response) => {
+                    console.log("sending status")
                     res.sendStatus(200);
                 })
                 .catch((err) => {
                     console.error(err);
                 })
 
-            //createDB.createDB(payload.sub);
+            createDB.createDB(payload.sub);
         });
 
 
