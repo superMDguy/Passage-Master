@@ -34,9 +34,6 @@ app.get('/app/', function(req, res) {
 let auth = new GoogleAuth;
 let client = new auth.OAuth2(CLIENT_ID, '', '');
 
-function authorizeUser(userID) {
-    create
-}
 app.post('/auth/google/callback', (req, res) => {
     var id_token = req.body.id_token;
     client.verifyIdToken(id_token, CLIENT_ID,
