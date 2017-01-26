@@ -59,16 +59,13 @@ angular.module('starter.controllers', [])
 
 
     $scope.changePassage = function() {
-        for (var i = 0; i < $scope.passages.length; i++) {
-            var passage = $scope.passages[i];
-            $http.patch('/passages/' + passage.id, { "currentPassage": 0 });
-        }
-        $http.patch('/passages/' + $scope.data.newCurrentPassage, { "currentPassage": 1 }).then(function(response) {
 
-            $state.go("app.passages");
-        })
+        $http.patch('/setCurrentPassage/' + $scope.data.newCurrentPassage)
+            .then(function(response) {
+                $state.go('app.passages')
+            });
+
     };
-
 })
 
 .controller('gameStartCtrl', function($scope, $state, $http) {
