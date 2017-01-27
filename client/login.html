@@ -1,22 +1,38 @@
 <html lang="en">
 
 <head>
-	<meta name="google-signin-scope" content="profile email">
-	<meta name="google-signin-client_id" content="236526742648-j6iavch8oqjb89ar32esdpreu4p7tm9n.apps.googleusercontent.com">
-	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<script src="https://cdn.auth0.com/js/lock/10.9.1/lock.min.js"></script>
 </head>
 
 <body>
-	<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+	<button id="btn-login">Login</button>
 	<script>
-      function onSignIn(googleUser) {
-        var profile = googleUser.getBasicProfile();
+		document.getElementById('btn-login').addEventListener('click', function() {
+  			lock.show();
+		});
+		// Initiating our Auth0Lock
+		var lock = new Auth0Lock(
+		'oGWG8kjBrjKf6biSPhEwMXdrWRvWEyqt',
+		'supermdguy.auth0.com'
+		);
 
-        var id_token = googleUser.getAuthResponse().id_token;
-        console.log("ID Token: " + id_token);
-      
-        var url = "auth/google/callback";
-		var params = "id_token=" + id_token;
+		// Listening for the authenticated event
+		lock.on("authenticated", function(authResult) {
+		// Use the token in authResult to getUserInfo() and save it to localStorage
+		lock.getUserInfo(authResult.accessToken, function(error, profile) {
+			if (error) {
+			// Handle error
+			return;
+			}
+			sendToken(authResult.accessToken, JSON.stringify(profile));
+			//localStorage.setItem('accessToken', authResult.accessToken);
+			//localStorage.setItem('profile', JSON.stringify(profile));
+		});
+	});
+
+      function sendToken(token, profile) {
+        var url = "auth0/callback";
+		var params = "id_token=" + token;
 		var xhr = new XMLHttpRequest();
 		xhr.open("POST", url, true);
 

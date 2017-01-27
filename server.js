@@ -40,7 +40,7 @@ app.post('/auth/google/callback', (req, res) => {
         function(e, login) {
             var payload = login.getPayload();
             req.session.user = payload;
-
+            console.log(payload);
             let params = {
                 TableName: payload.sub.toString()
             };
@@ -57,10 +57,31 @@ app.post('/auth/google/callback', (req, res) => {
             }, 1000);
              res.sendStatus(200);
         });
+});
 
+app.post('/auth0/callback', (req, res) => {
+    var id_token = req.body.id_token;
+    client.verifyIdToken(id_token, CLIENT_ID,
+        function(e, login) {
+            var payload = login.getPayload();
+            req.session.user = payload;
+            console.log(payload);
+            let params = {
+                TableName: payload.sub.toString()
+            };
 
-
-
+            setInterval(() => {
+                dynamodb.describeTable(params, function(err, data) {
+                    if (err) {
+                        createDB.createDB(payload.sub);
+                    }
+                    else if (data.Table.TableStatus == "ACTIVE") {
+                        return;
+                    }
+                });
+            }, 1000);
+             res.sendStatus(200);
+        });
 });
 
 let server = app.listen(8081, function() {
