@@ -7,40 +7,20 @@
 <body>
 	<button id="btn-login">Login</button>
 	<script>
-		document.getElementById('btn-login').addEventListener('click', function() {
-  			lock.show();
-		});
-		// Initiating our Auth0Lock
-		var lock = new Auth0Lock(
-		'oGWG8kjBrjKf6biSPhEwMXdrWRvWEyqt',
-		'supermdguy.auth0.com'
-		);
-
-		// Listening for the authenticated event
-		lock.on("authenticated", function(authResult) {
-		// Use the token in authResult to getUserInfo() and save it to localStorage
-		lock.getUserInfo(authResult.accessToken, function(error, profile) {
-			if (error) {
-			// Handle error
-			return;
+		var lock = new Auth0Lock('oGWG8kjBrjKf6biSPhEwMXdrWRvWEyqt','supermdguy.auth0.com', {
+			auth: {
+				redirectUrl: 'http://localhost:8081/auth0/callback',
+				responseType: 'code',
+				params: {
+					scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
+				}
 			}
-			sendToken(authResult.accessToken, JSON.stringify(profile));
-			//localStorage.setItem('accessToken', authResult.accessToken);
-			//localStorage.setItem('profile', JSON.stringify(profile));
 		});
-	});
 
-      function sendToken(token, profile) {
-        var url = "auth0/callback";
-		var params = "id_token=" + token;
-		var xhr = new XMLHttpRequest();
-		xhr.open("POST", url, true);
-
-		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-		xhr.send(params);
-      };
-    </script>
+		document.getElementById('btn-login').addEventListener('click', function () {
+			lock.show();
+		});		
+	</script>
 </body>
 
 </html>

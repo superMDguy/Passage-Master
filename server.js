@@ -3,11 +3,9 @@ let bodyParser = require('body-parser');
 let AWS = require("aws-sdk");
 let path = require('path');
 let session = require('express-session');
-let GoogleAuth = require('google-auth-library');
+let rp = require('request-promise-native');
 
-let createDB = require('./createDB')
-
-const CLIENT_ID = "236526742648-j6iavch8oqjb89ar32esdpreu4p7tm9n.apps.googleusercontent.com"
+let createDB = require('./createDB');
 
 AWS.config.setPromisesDependency(null);
 
@@ -15,7 +13,7 @@ let app = express();
 
 app.use(express.static('client'));
 app.use(express.static('app/www'));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({
     resave: true,
@@ -23,68 +21,60 @@ app.use(session({
     saveUninitialized: false,
 }))
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
     res.sendFile(__dirname + "/" + "client/index.html");
 });
 
-app.get('/app/', function(req, res) {
+app.get('/app/', function (req, res) {
     res.sendFile(__dirname + "/" + "app/www/index.html");
 });
 
-let auth = new GoogleAuth;
-let client = new auth.OAuth2(CLIENT_ID, '', '');
+app.get('/auth0/callback', (req, res) => {
+    let code = req.query.code;
 
-app.post('/auth/google/callback', (req, res) => {
-    var id_token = req.body.id_token;
-    client.verifyIdToken(id_token, CLIENT_ID,
-        function(e, login) {
-            var payload = login.getPayload();
-            req.session.user = payload;
-            console.log(payload);
-            let params = {
-                TableName: payload.sub.toString()
-            };
+    var options = {
+        url: 'https://supermdguy.auth0.com/oauth/token',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        form: {
+            'client_id': 'oGWG8kjBrjKf6biSPhEwMXdrWRvWEyqt',
+            'redirect_uri': 'http://localhost:8081/auth0/callback',
+            'client_sercret': '58SRa_vZ5u7PxzimrPM2o31nF5c7ROgxzAcAJUqSRHiHADXs9TaXoqU-oVmLSpZY',
+            'code': code,
+            'grant_type': 'authorization_code'
+        },
+        json: true
+    }
 
-            setInterval(() => {
-                dynamodb.describeTable(params, function(err, data) {
-                    if (err) {
-                        createDB.createDB(payload.sub);
-                    }
-                    else if (data.Table.TableStatus == "ACTIVE") {
-                        return;
-                    }
-                });
-            }, 1000);
-             res.sendStatus(200);
-        });
+
+    rp(options)
+        .then((body) => {
+            console.log("Processing authorization code...");
+            rp(`https://supermdguy.auth0.com/userinfo/?access_token=${body.access_token}`).then((userInfo) => {
+                user = JSON.parse(userInfo);
+                req.session.userID = user.user_id.toString();
+
+                let params = {
+                    TableName: req.session.userID
+                };
+
+                setInterval(() => {
+                    dynamodb.describeTable(params, function (err, data) {
+                        if (err) {
+                            createDB.createDB(req.session.userID);
+                        }
+                        else if (data.Table.TableStatus == "ACTIVE") {
+                            return;
+                        }
+                    });
+                }, 1000); //Check periodically until table is active
+                res.redirect('/app');
+            });
+        })
+        .catch((err) => console.error(err));
 });
 
-app.post('/auth0/callback', (req, res) => {
-    var id_token = req.body.id_token;
-    client.verifyIdToken(id_token, CLIENT_ID,
-        function(e, login) {
-            var payload = login.getPayload();
-            req.session.user = payload;
-            console.log(payload);
-            let params = {
-                TableName: payload.sub.toString()
-            };
-
-            setInterval(() => {
-                dynamodb.describeTable(params, function(err, data) {
-                    if (err) {
-                        createDB.createDB(payload.sub);
-                    }
-                    else if (data.Table.TableStatus == "ACTIVE") {
-                        return;
-                    }
-                });
-            }, 1000);
-             res.sendStatus(200);
-        });
-});
-
-let server = app.listen(8081, function() {
+let server = app.listen(8081, function () {
     let host = server.address().address;
     let port = server.address().port;
 
@@ -102,10 +92,10 @@ let dynamodb = new AWS.DynamoDB();
 
 app.get('/passages', (req, res) => {
     let params = {
-        TableName: req.session.user.sub
+        TableName: req.session.userID
     };
     console.log("Getting passages...");
-    docClient.scan(params, function(err, data) {
+    docClient.scan(params, function (err, data) {
         if (err) {
             console.error("Unable to scan items. Error JSON:", JSON.stringify(err, null, 2));
         } else {
@@ -115,15 +105,15 @@ app.get('/passages', (req, res) => {
     });
 });
 
-app.post('/passages', function(req, res) {
+app.post('/passages', function (req, res) {
     let passage = req.body;
 
     let params = {
-        TableName: req.session.user.sub,
+        TableName: req.session.userID,
         Item: passage
     };
 
-    docClient.put(params, function(err, data) {
+    docClient.put(params, function (err, data) {
         if (err) {
             console.error("Unable to add passage", passage.title, ". Error JSON:", JSON.stringify(err, null, 2));
         } else {
@@ -137,7 +127,7 @@ app.get('/passages/:id', (req, res) => {
     let id = Number(req.params.id);
 
     let params = {
-        TableName: req.session.user.sub,
+        TableName: req.session.userID,
         Key: {
             "id": id
         }
@@ -145,7 +135,7 @@ app.get('/passages/:id', (req, res) => {
 
     console.log("Getting passage " + id);
 
-    docClient.get(params, function(err, data) {
+    docClient.get(params, function (err, data) {
         if (err) {
             console.error("Unable to get item. Error JSON:", JSON.stringify(err, null, 2));
         } else {
@@ -166,7 +156,7 @@ app.delete('/passages/:id', (req, res) => {
     }
 
     console.log("Deleting passage " + id)
-    docClient.delete(params, function(err, data) {
+    docClient.delete(params, function (err, data) {
         if (err) {
             console.error("Unable to get item. Error JSON:", JSON.stringify(err, null, 2));
         } else {
@@ -181,21 +171,21 @@ app.patch('/setCurrentPassage/:id', (req, res) => {
     let passages;
 
     let allParams = {
-        TableName: req.session.user.sub
+        TableName: req.session.userID
     };
 
     console.log("Getting passages...");
 
-    docClient.scan(allParams, function(err, data) {
+    docClient.scan(allParams, function (err, data) {
         if (err) {
             console.error("Unable to scan items. Error JSON:", JSON.stringify(err, null, 2));
         } else {
             console.log("Success!");
             var databasePromises = [];
-            data.Items.map(function(passage) {
+            data.Items.map(function (passage) {
                 let isCurrentPassage = 1 ? passage.id == id : 0;
                 let params = {
-                    TableName: 'Passages',
+                    TableName: req.session.userID,
                     Key: {
                         'id': passage.id
                     },

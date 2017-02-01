@@ -5,56 +5,58 @@
 	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
 -->
 <html>
-	<head>
-		<title>Passage Master</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-		
-		 <meta name="google-signin-scope" content="profile email">
-		<meta name="google-signin-client_id" content="236526742648-j6iavch8oqjb89ar32esdpreu4p7tm9n.apps.googleusercontent.com">
-		<script src="https://apis.google.com/js/platform.js" async defer></script>
-	</head>
-	<body>
 
-		<!-- Banner -->
-			<section id="banner">
-				<h2><strong>Passage Master</strong></h2>
-				<p>Memorize anything.</p>
-				<ul class="actions">
-					<center><div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div></center>
-				</ul>
-			</section>
+<head>
+	<title>Passage Master</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 
-		<!-- One -->
-			<section id="one" class="wrapper special">
-				<div class="inner">
-					<header class="major">
-						<h2>Features</h2>
-					</header>
-					<div class="features">
-						<div class="feature">
-							<i class="fa fa-plus"></i>
-							<h3>Add Passages</h3>
-							<p>You can add passages from anywhere of your choice.  Just copy and paste!</p>
-						</div>
-						<div class="feature">
-							<i class="fa fa-gamepad"></i>
-							<h3>Review</h3>
-							<p>Play games to help reinforce your mastery of passages.</p>
-						</div>
-						<div class="feature">
-							<i class="fa fa-users"></i>
-							<h3>Create Users</h3>
-							<p>You can add multiple users, and manage them to view their progress using your parent account.</p>
-						</div>
-					</div>
+	<script src="https://cdn.auth0.com/js/lock/10.9.1/lock.min.js"></script>
+</head>
+
+<body>
+
+	<!-- Banner -->
+	<section id="banner">
+		<h2><strong>Passage Master</strong></h2>
+		<p>Memorize anything.</p>
+		<ul class="actions">
+			<li>
+				<a href="#" id="btn-login" class="button special">Get started</a>
+			</li>
+		</ul>
+	</section>
+
+	<!-- One -->
+	<section id="one" class="wrapper special">
+		<div class="inner">
+			<header class="major">
+				<h2>Features</h2>
+			</header>
+			<div class="features">
+				<div class="feature">
+					<i class="fa fa-plus"></i>
+					<h3>Add Passages</h3>
+					<p>You can add passages from anywhere of your choice. Just copy and paste!</p>
 				</div>
-			</section>
+				<div class="feature">
+					<i class="fa fa-gamepad"></i>
+					<h3>Review</h3>
+					<p>Play games to help reinforce your mastery of passages.</p>
+				</div>
+				<div class="feature">
+					<i class="fa fa-users"></i>
+					<h3>Create Users</h3>
+					<p>You can add multiple users, and manage them to view their progress using your parent account.</p>
+				</div>
+			</div>
+		</div>
+	</section>
 
-		 <!--We may implement this later
+	<!--We may implement this later
 			<section id="two" class="wrapper style2 special">
 				<div class="inner narrow">
 					<header>
@@ -80,42 +82,38 @@
 				</div>
 			</section>-->
 
-		<!-- Footer -->
-			<footer id="footer">
-				<div class="copyright">
-					&copy; 2017. Design: <a href="http://templated.co/">TEMPLATED</a>.
-				</div>
-			</footer>
+	<!-- Footer -->
+	<footer id="footer">
+		<div class="copyright">
+			&copy; 2017. Design: <a href="http://templated.co/">TEMPLATED</a>.
+		</div>
+	</footer>
 
-		<!-- Scripts -->
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-			<script src="assets/js/main.js"></script>
-			<script>
-				function onSignIn(googleUser) {
-					var profile = googleUser.getBasicProfile();
+	<!-- Scripts -->
+	<script src="assets/js/skel.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+	<script src="assets/js/main.js"></script>
+	<script>
+		var lock = new Auth0Lock('oGWG8kjBrjKf6biSPhEwMXdrWRvWEyqt', 'supermdguy.auth0.com', {
+			auth: {
+				redirectUrl: 'http://localhost:8081/auth0/callback',
+				responseType: 'code',
+				params: {
+					scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
+				}
+			},
+			options: {
+				primaryColor: '#12B28F',
+				logo: ''
+			}
+		});
 
-					var id_token = googleUser.getAuthResponse().id_token;
-					console.log("ID Token: " + id_token);
-				
-					var url = "auth/google/callback";
-					var params = "id_token=" + id_token;
-					var xhr = new XMLHttpRequest();
-					xhr.open("POST", url, true);
+		document.getElementById('btn-login').addEventListener('click', function () {
+			lock.show();
+		});		
+	</script>
 
-					xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+</body>
 
-					xhr.send(params);
-
-					xhr.onreadystatechange = function() {
-						if (xhr.readyState==4 && xhr.status==200)
-						{
-							window.location = '/app';
-						}
-					}
-				};
-    	</script>
-
-	</body>
 </html>
