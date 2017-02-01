@@ -16,33 +16,25 @@ import { Passage } from '../models/passage-model'
 
 @Injectable()
 export class PassagesService {
-  constructor(private http: Http) {}
+  constructor(private http: Http) { }
 
   private cachedPassages: Passage[];
-  private prefix: string = "http://localhost:3000";
+  private prefix: string = "http://localhost:3001";
 
   getPassages(): Promise<Passage[]> {
-    if (this.cachedPassages == undefined) {
-      return this.http.get(this.prefix + "/passages")
-        .toPromise()
-        .then((res) => {
-          this.cachedPassages = res.json();
-        });
-    } else {
-      console.log("Sending cached")
-      return new Promise<Passage[]>(
-        (resolve, reject) => {
-          resolve(this.cachedPassages)
-        }
-      );
-    }
+    return this.http.get(this.prefix + "/passages")
+      .toPromise()
+      .then((res) => {
+        this.cachedPassages = res.json();
+        return res.json();
+      });
   }
 
-  addPassage(title: string, text: string) {
-    var nextId: number;
-    this.getPassages().then(
+  addPassage(title: string, text: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.getPassages().then(
       (passages) => {
-        nextId = passages.length;
+        let nextId: number = passages.length + 1;
 
         let passageToAdd: Passage = {
           id: nextId,
@@ -56,10 +48,17 @@ export class PassagesService {
         console.log("Adding passage " + JSON.stringify(passageToAdd))
         this.cachedPassages.push(passageToAdd);
 
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+
         this.http
-          .post(this.prefix + "/passages", JSON.stringify(passageToAdd))
+          .post(this.prefix + "/passages", passageToAdd, options)
           .toPromise()
-          .catch(err => console.error(err));
-      });
+          .catch(err => console.error(err))
+          .then((res: Response) => {
+            resolve();
+          })
+      })
+    });
   }
 }

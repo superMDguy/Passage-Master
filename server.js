@@ -4,12 +4,33 @@ let AWS = require("aws-sdk");
 let path = require('path');
 let session = require('express-session');
 let rp = require('request-promise-native');
+let https = require('https');
+let fs = require('fs');
 
 let createDB = require('./createDB');
 
 AWS.config.setPromisesDependency(null);
 
 let app = express();
+
+let httpsPort = 3443;
+// Setup HTTPS
+let options = {
+  key: fs.readFileSync('private.key'),
+  cert: fs.readFileSync('certificate.pem')
+};
+
+let secureServer = https.createServer(options, app).listen(httpsPort);
+
+app.set('port_https', httpsPort);
+
+app.all('*', function(req, res, next){
+  if (req.secure) {
+    return next();
+  };
+ res.redirect('https://'+req.hostname+':'+app.get('port_https')+req.url);
+});
+
 
 app.use(express.static('client'));
 app.use(express.static('app/www'));
@@ -73,14 +94,6 @@ app.get('/auth0/callback', (req, res) => {
         })
         .catch((err) => console.error(err));
 });
-
-let server = app.listen(8081, function () {
-    let host = server.address().address;
-    let port = server.address().port;
-
-    console.log(`App listening at http://${host}:${port}`)
-
-})
 
 AWS.config.update({
     region: "us-west-2",

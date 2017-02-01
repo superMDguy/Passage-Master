@@ -24,8 +24,10 @@ export class AddPassagePage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private passagesService: PassagesService) { }
 
   add() {
-    console.log("Adding passage with title " + this.title + " and text " + this.text);
     this.passagesService.addPassage(this.title, this.text)
-    this.navCtrl.push(PassagesPage)
+      .then((res: any) => {
+        this.navCtrl.push(PassagesPage)
+      })
+
   }
 }
