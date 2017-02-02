@@ -4,7 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { PassagesService } from '../../providers/passages.service';
 import { Passage } from '../../models/passage-model';
 import { PassagePage } from '../passage/passage';
-import { AddPassagePage } from '../../add-passage/add-passage'
+import { AddPassagePage } from '../add-passage/add-passage'
 /*
   Generated class for the Passages page.
 
@@ -18,15 +18,11 @@ import { AddPassagePage } from '../../add-passage/add-passage'
 })
 
 export class PassagesPage {
-  passages: Passage[];
+  @Input() passages: Array<Passage>;
+  //passages: Array<Passage>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private passagesService: PassagesService) {
-    this.passagesService.getPassages()
-      .subscribe(
-      passages => this.passages = passages, //Bind to view
-      err => {
-        console.error(err);
-      });
+    this.passagesService.getPassages().then ((res) => { this.passages = res; console.log(res)});
   }
 
   itemTapped(event, passage) {
@@ -37,6 +33,6 @@ export class PassagesPage {
   }
 
   addPassage() {
-    this.navCtrl.push()
+    this.navCtrl.push(AddPassagePage)
   }
 }

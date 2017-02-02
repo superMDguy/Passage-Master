@@ -6,9 +6,6 @@ import { CommonModule } from '@angular/common';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 import { MyApp } from './app.component';
-import { HelloIonicPage } from '../pages/hello-ionic/hello-ionic';
-import { ItemDetailsPage } from '../pages/item-details/item-details';
-import { ListPage } from '../pages/list/list';
 import { PassagesPage } from '../pages/passages/passages';
 import { PassagePage } from '../pages/passage/passage';
 import { AddPassagePage } from '../pages/add-passage/add-passage';
@@ -16,9 +13,6 @@ import { AddPassagePage } from '../pages/add-passage/add-passage';
 @NgModule({
   declarations: [
     MyApp,
-    HelloIonicPage,
-    ItemDetailsPage,
-    ListPage,
     PassagesPage,
     PassagePage,
     AddPassagePage,
@@ -38,9 +32,6 @@ import { AddPassagePage } from '../pages/add-passage/add-passage';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HelloIonicPage,
-    ItemDetailsPage,
-    ListPage,
     PassagesPage,
     PassagePage,
     AddPassagePage,

@@ -6,23 +6,21 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Add Passage</ion-title>
-  </ion-navbar>
+	<ion-navbar>
+		<ion-title>Add Passage</ion-title>
+	</ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
- <form (ngSubmit)="add()">
-      <ion-item>
-        <ion-label>Title</ion-label>
-        <ion-input type="text" [(ngModel)]="title" name="title"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Text</ion-label>
-        <ion-textarea [(ngModel)]="text" name="text"></ion-textarea>
-      </ion-item>
-      <button ion-button type="submit" block>Add Passage</button>
-    </form>
+	<ion-item>
+		<ion-label>Title</ion-label>
+		<ion-input type="text" [(ngModel)]="title"></ion-input>
+	</ion-item>
+	<ion-item>
+		<ion-label>Text</ion-label>
+		<ion-textarea [(ngModel)]="text"></ion-textarea>
+	</ion-item>
+	<button ion-button (click)="add()">Add Passage</button>
 </ion-content>
