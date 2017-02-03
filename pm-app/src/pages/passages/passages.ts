@@ -28,7 +28,8 @@ export class PassagesPage {
   itemTapped(event, passage) {
     console.log("Clicked!  Showing passage", passage);
     this.navCtrl.push(PassagePage, {
-      passage: passage
+      passage: passage,
+      id: passage.id
     });
   }
 

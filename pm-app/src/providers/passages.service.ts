@@ -61,4 +61,10 @@ export class PassagesService {
       })
     });
   }
+
+  deletePassage(id: number): Promise<Response> {
+    return this.http
+      .delete(this.prefix + '/passages/' + id.toString())
+      .toPromise();
+  }
 }

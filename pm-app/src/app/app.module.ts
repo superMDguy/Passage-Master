@@ -20,7 +20,7 @@ import { AddPassagePage } from '../pages/add-passage/add-passage';
   imports: [
     IonicModule.forRoot(MyApp, {}, {
       links: [{ component: PassagesPage, name: 'Passages', segment: 'passages' },
-      {component: PassagePage, name: 'Passage', segment: 'passages/:passage.id' },
+      {component: PassagePage, name: 'Passage', segment: 'passages/:id' },
       {component: AddPassagePage, name: 'Add Passage', segment: 'passages/add' }]
     }),
     BrowserModule,

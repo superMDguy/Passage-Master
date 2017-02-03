@@ -14,7 +14,7 @@ import { PassagesPage } from '../pages/passages/passages';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  // make HelloIonicPage the root (or first) page
+  // make PassagesPage the root (or first) page
   rootPage: any = PassagesPage;
   pages: Array<{title: string, component: any}>;
 
