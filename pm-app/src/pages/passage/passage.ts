@@ -27,8 +27,8 @@ export class PassagePage {
 
   delete() {
     let confirm = this.alertCtrl.create({
-      title: 'Use this lightsaber?',
-      message: 'Do you agree to use this lightsaber to do good across the intergalactic galaxy?',
+      title: `Delete ${this.passage.title}?`,
+      message: `Are you sure you want to delete ${this.passage.title}`,
       buttons: [
         {
           text: 'No',
@@ -47,7 +47,6 @@ export class PassagePage {
         }
       ]
     });
-
     confirm.present();
   }
 }
