@@ -49,7 +49,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/app/', function (req, res) {
-    res.sendFile(path.join(__dirname, "app/www/index.html"));
+    res.sendFile(path.join(__dirname, "pm-app/www/index.html"));
 });
 
 app.get('/auth0/callback', (req, res) => {
