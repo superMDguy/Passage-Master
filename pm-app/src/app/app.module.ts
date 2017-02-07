@@ -9,6 +9,7 @@ import { MyApp } from './app.component';
 import { PassagesPage } from '../pages/passages/passages';
 import { PassagePage } from '../pages/passage/passage';
 import { AddPassagePage } from '../pages/add-passage/add-passage';
+import { GamePage } from '../pages/game/game';
 
 @NgModule({
   declarations: [
@@ -16,12 +17,14 @@ import { AddPassagePage } from '../pages/add-passage/add-passage';
     PassagesPage,
     PassagePage,
     AddPassagePage,
+    GamePage,
   ],
   imports: [
     IonicModule.forRoot(MyApp, {}, {
       links: [{ component: PassagesPage, name: 'Passages', segment: 'passages' },
       {component: PassagePage, name: 'Passage', segment: 'passages/:id' },
-      {component: AddPassagePage, name: 'Add Passage', segment: 'passages/add' }]
+      {component: AddPassagePage, name: 'Add Passage', segment: 'addPassage' },
+      {component: GamePage, name: "Play Game", segment: 'playGame/:id'}]
     }),
     BrowserModule,
     FormsModule,
@@ -35,6 +38,7 @@ import { AddPassagePage } from '../pages/add-passage/add-passage';
     PassagesPage,
     PassagePage,
     AddPassagePage,
+    GamePage
   ],
   providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }]
 })

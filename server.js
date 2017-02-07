@@ -12,28 +12,30 @@ let createDB = require('./createDB');
 AWS.config.setPromisesDependency(null);
 
 let app = express();
+//const prefix = "http://localhost:8081"
+const prefix = "http://passagemaster.com"
 
-let httpsPort = 3443;
-// Setup HTTPS
-let options = {
-  key: fs.readFileSync('private.key'),
-  cert: fs.readFileSync('certificate.pem')
-};
+// let httpsPort = 3443;
+// // Setup HTTPS
+// let options = {
+//   key: fs.readFileSync('private.key'),
+//   cert: fs.readFileSync('certificate.pem')
+// };
 
-let secureServer = https.createServer(options, app).listen(httpsPort);
+// let secureServer = https.createServer(options, app).listen(httpsPort);
 
-app.set('port_https', httpsPort);
+// app.set('port_https', httpsPort);
 
-app.all('*', function(req, res, next){
-  if (req.secure) {
-    return next();
-  };
- res.redirect('https://'+req.hostname+':'+app.get('port_https')+req.url);
-});
+// app.all('*', function(req, res, next){
+//   if (req.secure) {
+//     return next();
+//   };
+//  res.redirect('https://'+req.hostname+':'+app.get('port_https')+req.url);
+// });
 
 
 app.use(express.static('client'));
-app.use(express.static('app/www'));
+app.use('/app', express.static('pm-app/www'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({
@@ -43,11 +45,11 @@ app.use(session({
 }))
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + "/" + "client/index.html");
+    res.sendFile(path.join(__dirname, "client/index.html"));
 });
 
 app.get('/app/', function (req, res) {
-    res.sendFile(__dirname + "/" + "app/www/index.html");
+    res.sendFile(path.join(__dirname, "app/www/index.html"));
 });
 
 app.get('/auth0/callback', (req, res) => {
@@ -59,7 +61,7 @@ app.get('/auth0/callback', (req, res) => {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         form: {
             'client_id': 'oGWG8kjBrjKf6biSPhEwMXdrWRvWEyqt',
-            'redirect_uri': 'http://localhost:8081/auth0/callback',
+            'redirect_uri': (prefix + '/auth0/callback'),
             'client_sercret': '58SRa_vZ5u7PxzimrPM2o31nF5c7ROgxzAcAJUqSRHiHADXs9TaXoqU-oVmLSpZY',
             'code': code,
             'grant_type': 'authorization_code'
@@ -73,7 +75,7 @@ app.get('/auth0/callback', (req, res) => {
             console.log("Processing authorization code...");
             rp(`https://supermdguy.auth0.com/userinfo/?access_token=${body.access_token}`).then((userInfo) => {
                 user = JSON.parse(userInfo);
-                req.session.userID = user.user_id.toString();
+                req.session.userID = user.user_id.toString().replace("|", "l"); //Replace to satisfy naming reqs from dynamodb
 
                 let params = {
                     TableName: req.session.userID
@@ -221,4 +223,8 @@ app.patch('/setCurrentPassage/:id', (req, res) => {
         }
     });
 
+})
+
+app.listen(8081,() => {
+  console.log('App listening on port 8081!')
 })

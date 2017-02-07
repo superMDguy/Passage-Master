@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 
 import { Passage } from '../../models/passage-model';
 import { PassagesService } from '../../providers/passages.service';
 import { PassagesPage } from '../passages/passages';
+import { GamePage } from '../game/game';
 
 /*
   Generated class for the Passage page.
@@ -19,16 +20,21 @@ import { PassagesPage } from '../passages/passages';
   providers: [PassagesService]
 })
 export class PassagePage {
-  passage: Passage;
+  @Input() passage: Passage;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private passagesService: PassagesService, public alertCtrl: AlertController) {
-    this.passage = navParams.get('passage');
+    // if (typeof navParams.get('passage') == typeof undefined) {
+    this.passage = navParams.get('passage'); //TODO: Fix commented stuff so it work #/passgases/<id> is reloaded
+    // } else {
+    //   this.passagesService.getPassage(1) //TODO: Replace this with the id in the URL
+    //     .then((passage: Passage) => this.passage = passage);
+    // // }
   }
 
   delete() {
     let confirm = this.alertCtrl.create({
-      title: `Delete ${this.passage.title}?`,
-      message: `Are you sure you want to delete ${this.passage.title}`,
+      title: `Delete "${this.passage.title}"?`,
+      message: `Are you sure you want to delete "${this.passage.title}"`,
       buttons: [
         {
           text: 'No',
@@ -48,5 +54,12 @@ export class PassagePage {
       ]
     });
     confirm.present();
+  }
+
+  playGame() {
+    this.navCtrl.push(GamePage, {
+      passage: this.passage,
+      id: this.passage.id
+    })
   }
 }

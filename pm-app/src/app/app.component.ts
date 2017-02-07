@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { Platform, MenuController, Nav } from 'ionic-angular';
+import { Platform, Nav } from 'ionic-angular';
 
 import { StatusBar, Splashscreen } from 'ionic-native';
 
@@ -16,11 +16,9 @@ export class MyApp {
 
   // make PassagesPage the root (or first) page
   rootPage: any = PassagesPage;
-  pages: Array<{title: string, component: any}>;
 
   constructor(
     public platform: Platform,
-    public menu: MenuController
   ) {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.

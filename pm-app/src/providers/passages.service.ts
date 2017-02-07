@@ -19,13 +19,21 @@ export class PassagesService {
   constructor(private http: Http) { }
 
   private cachedPassages: Passage[];
-  private prefix: string = "http://localhost:3001";
+  private prefix: string = "";
 
   getPassages(): Promise<Passage[]> {
     return this.http.get(this.prefix + "/passages")
       .toPromise()
       .then((res) => {
         this.cachedPassages = res.json();
+        return res.json();
+      });
+  }
+
+  getPassage(id: number): Promise<Passage> {
+    return this.http.get(this.prefix + "/passages/" + id.toString())
+      .toPromise()
+      .then((res) => {
         return res.json();
       });
   }
