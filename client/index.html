@@ -103,15 +103,19 @@
 					scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
 				}
 			},
-			options: {
+			socialButtonStyle: 'small',
+			theme: {
 				primaryColor: '#12B28F',
-				logo: 'https://upload.wikimedia.org/wikipedia/en/4/48/Blank.JPG'
-			}
+				logo: 'images/logo.jpg'
+			},
+			languageDictionary: {
+				title: "Sign in"
+			},
 		});
 
 		document.getElementById('btn-login').addEventListener('click', function () {
 			lock.show();
-		});		
+		});
 	</script>
 
 </body>

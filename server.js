@@ -12,7 +12,7 @@ let createDB = require('./createDB');
 AWS.config.setPromisesDependency(null);
 
 let app = express();
-//const prefix = "http://localhost:8081"
+// const prefix = "http://localhost:8081"
 const prefix = "http://passagemaster.com"
 
 // let httpsPort = 3443;
@@ -35,7 +35,7 @@ const prefix = "http://passagemaster.com"
 
 
 app.use(express.static('client'));
-app.use('/app', express.static('pm-app/www'));
+app.use(express.static('pm-app/www'))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({
@@ -45,11 +45,11 @@ app.use(session({
 }))
 
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, "client/index.html"));
+    res.sendFile(__dirname  + "/client/index.html");
 });
 
 app.get('/app/', function (req, res) {
-    res.sendFile(path.join(__dirname, "pm-app/www/index.html"));
+    res.sendFile(__dirname  + "/pm-app/www/index.html");
 });
 
 app.get('/auth0/callback', (req, res) => {
@@ -164,7 +164,7 @@ app.delete('/passages/:id', (req, res) => {
     let id = Number(req.params.id);
 
     let params = {
-        TableName: 'Passages',
+        TableName: req.session.userID,
         Key: {
             'id': id,
         }

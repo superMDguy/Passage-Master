@@ -23,11 +23,11 @@ export class GamePage {
   correctAnswer: string;
 
   removePunctuation(s: string): string {
-    let punctuationless = s.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+    let punctuationless = s.replace(/[.,\/#!$%\^&\*\?;:{}=\-_`~()]/g, "");
     return punctuationless.replace(/\s{2,}/g, " ");
   }
 
-constructor(public navCtrl: NavController, public navParams: NavParams) {  
+constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ngOnInit() {
