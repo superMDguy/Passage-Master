@@ -45,11 +45,11 @@ app.use(session({
 }))
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname  + "/client/index.html");
+    res.sendFile("./client/index.html");
 });
 
 app.get('/app/', function (req, res) {
-    res.sendFile(__dirname  + "/pm-app/www/index.html");
+    res.sendFile("./pm-app/www/index.html");
 });
 
 app.get('/auth0/callback', (req, res) => {
