@@ -45,11 +45,7 @@ app.use(session({
 }))
 
 app.get('/', function (req, res) {
-    res.sendFile("./client/index.html");
-});
-
-app.get('/app/', function (req, res) {
-    res.sendFile("./pm-app/www/index.html");
+    res.sendFile("client/index.html", { root: __dirname });
 });
 
 app.get('/auth0/callback', (req, res) => {
@@ -91,7 +87,7 @@ app.get('/auth0/callback', (req, res) => {
                         }
                     });
                 }, 1000); //Check periodically until table is active
-                res.redirect('/app');
+                res.sendFile("pm-app/www/index.html", { root: __dirname });
             });
         })
         .catch((err) => console.error(err));
