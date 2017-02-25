@@ -2537,20 +2537,20 @@
 			text-transform: uppercase;
 		}
 
-		header h2, header h3 {
+		header h1, header h3 {
 			display: inline-block;
 			padding-bottom: 0.4em;
 			border-bottom-style: double;
 			border-bottom-width: 4px;
 		}
 
-		header h2 + p {
+		header h1 + h2 {
 			font-size: 1.25em;
 			margin-top: -0.5em;
 			line-height: 1.5em;
 		}
 
-		header h3 + p {
+		header h3 + h2 {
 			font-size: 1.1em;
 			line-height: 1.5em;
 		}
@@ -2590,11 +2590,11 @@
 
 		}
 
-	header h2, header h3 {
+	header h1, header h2 {
 		border-bottom-color: #e3e3e3;
 	}
 
-	header p {
+	header h2 {
 		color: #bbb;
 	}
 
@@ -3710,6 +3710,10 @@
 
 	#main {
 		padding: 4em 0 2em 0;
+	}
+
+	#main article {
+		padding-left: 5%;
 	}
 
 		@media screen and (max-width: 736px) {
