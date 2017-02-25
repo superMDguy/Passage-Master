@@ -225,6 +225,6 @@ app.patch('/setCurrentPassage/:id', (req, res) => {
 
 })
 
-app.listen(8081,() => {
-  console.log('App listening on port 8081!')
+app.listen(process.env.PORT || 8081,() => {
+  console.log('App started successfully!')
 })
