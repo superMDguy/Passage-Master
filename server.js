@@ -13,8 +13,8 @@ const Schema = mongoose.Schema
 const createDB = require('./createDB');
 
 let app = express();
-const prefix = "http://localhost:8081"
-// const prefix = "http://passagemaster.com"
+// const prefix = "http://localhost:8081"
+const prefix = "http://passagemaster.com"
 
 app.use(express.static('client'));
 app.use(express.static('pm-app/www'))
