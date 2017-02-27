@@ -1,38 +1,20 @@
-let express = require('express');
-let bodyParser = require('body-parser');
-let AWS = require("aws-sdk");
-let path = require('path');
-let session = require('express-session');
-let rp = require('request-promise-native');
-let https = require('https');
-let fs = require('fs');
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+const session = require('express-session');
+const rp = require('request-promise-native');
+const https = require('https');
+const fs = require('fs');
+const mongoose = require('mongoose');
 
-let createDB = require('./createDB');
+mongoose.Promise = Promise;
+const Schema = mongoose.Schema
 
-AWS.config.setPromisesDependency(null);
+const createDB = require('./createDB');
 
 let app = express();
-// const prefix = "http://localhost:8081"
-const prefix = "http://passagemaster.com"
-
-// let httpsPort = 3443;
-// // Setup HTTPS
-// let options = {
-//   key: fs.readFileSync('private.key'),
-//   cert: fs.readFileSync('certificate.pem')
-// };
-
-// let secureServer = https.createServer(options, app).listen(httpsPort);
-
-// app.set('port_https', httpsPort);
-
-// app.all('*', function(req, res, next){
-//   if (req.secure) {
-//     return next();
-//   };
-//  res.redirect('https://'+req.hostname+':'+app.get('port_https')+req.url);
-// });
-
+const prefix = "http://localhost:8081"
+// const prefix = "http://passagemaster.com"
 
 app.use(express.static('client'));
 app.use(express.static('pm-app/www'))
@@ -44,12 +26,35 @@ app.use(session({
     saveUninitialized: false,
 }))
 
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/test');
+
+var passageSchema = new Schema({
+    _id: Number,
+    title: String,
+    text: String,
+    reviewFrequency: String
+});
+
+var userSchema = new Schema({
+    name: String,
+    _id: String,
+    passages: [passageSchema]
+});
+
+var User = mongoose.model('User', userSchema)
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+    console.log("Opened database connection!!")
+});
+
 app.get('/', function (req, res) {
     res.sendFile("client/index.html", { root: __dirname });
 });
 
 app.get('/app/', function (req, res) {
-    res.sendFile("pm-app/www/index.html", {root: __dirname});
+    res.sendFile("pm-app/www/index.html", { root: __dirname });
 });
 
 app.get('/auth0/callback', (req, res) => {
@@ -69,162 +74,128 @@ app.get('/auth0/callback', (req, res) => {
         json: true
     }
 
-
     rp(options)
         .then((body) => {
             console.log("Processing authorization code...");
             rp(`https://supermdguy.auth0.com/userinfo/?access_token=${body.access_token}`).then((userInfo) => {
-                user = JSON.parse(userInfo);
-                req.session.userID = user.user_id.toString().replace("|", "l"); //Replace to satisfy naming reqs from dynamodb
-
-                let params = {
-                    TableName: req.session.userID
-                };
-
-                setInterval(() => {
-                    dynamodb.describeTable(params, function (err, data) {
-                        if (err) {
-                            createDB.createDB(req.session.userID);
+                userInfo = JSON.parse(userInfo);
+                req.session.userID = userInfo.user_id.toString();
+                User.findById(req.session.userID).exec()
+                    .then((user) => {
+                        if (!user) { //User doesn't exist, create an entry for it
+                            let emptyUser = new User({ _id: req.session.userID, name: userInfo.name, passages: [] });
+                            emptyUser.save()
+                                .then(() => res.redirect('/app'))
+                                .catch((err) => console.error(err));
+                        } else {
+                            res.redirect('/app')
                         }
-                        else if (data.Table.TableStatus == "ACTIVE") {
-                            return;
-                        }
-                    });
-                }, 1000); //Check periodically until table is active
-                res.redirect('/app');
+                    })
+                    .catch((err) => console.error(err));
             });
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err))
 });
-
-AWS.config.update({
-    region: "us-west-2",
-    endpoint: "https://dynamodb.us-west-2.amazonaws.com/"
-});
-
-let docClient = new AWS.DynamoDB.DocumentClient();
-let dynamodb = new AWS.DynamoDB();
 
 app.get('/passages', (req, res) => {
-    let params = {
-        TableName: req.session.userID
-    };
-    console.log("Getting passages...");
-    docClient.scan(params, function (err, data) {
-        if (err) {
-            console.error("Unable to scan items. Error JSON:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("Success!");
-            res.send(JSON.stringify(data.Items, null, 2));
-        }
-    });
+    User.findById(req.session.userID).exec()
+        .then((user) => {
+            res.send(user.passages);
+        })
+        .catch((err) => console.error(err))
 });
 
 app.post('/passages', function (req, res) {
     let passage = req.body;
 
-    let params = {
-        TableName: req.session.userID,
-        Item: passage
-    };
-
-    docClient.put(params, function (err, data) {
-        if (err) {
-            console.error("Unable to add passage", passage.title, ". Error JSON:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("PutItem succeeded:", passage.title);
-            res.sendStatus(200);
-        }
-    });
+    User.findById(req.session.userID).exec()
+        .then((user) => {
+            user.passages.push(passage);
+            user.save()
+                .then(() => res.sendStatus(200))
+                .catch((err) => console.error(err));
+        });
 });
 
-app.get('/passages/:id', (req, res) => {
-    let id = Number(req.params.id);
+// app.get('/passages/:id', (req, res) => {
+//     let id = Number(req.params.id);
 
-    let params = {
-        TableName: req.session.userID,
-        Key: {
-            "id": id
-        }
-    }
+//     let params = {
+//         TableName: req.session.userID,
+//         Key: {
+//             "id": id
+//         }
+//     }
 
-    console.log("Getting passage " + id);
+//     console.log("Getting passage " + id);
 
-    docClient.get(params, function (err, data) {
-        if (err) {
-            console.error("Unable to get item. Error JSON:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("Success!");
-            res.send(JSON.stringify(data.Item, null, 2));
-        }
-    });
+//     docClient.get(params, function (err, data) {
+//         if (err) {
+//             console.error("Unable to get item. Error JSON:", JSON.stringify(err, null, 2));
+//         } else {
+//             console.log("Success!");
+//             res.send(JSON.stringify(data.Item, null, 2));
+//         }
+//     });
+// });
+
+app.delete('/passages/:_id', (req, res) => {
+    let _id = Number(req.params._id);
+
+    User.findById(req.session.userID).exec()
+        .then((user) => {
+            let passageToRemove = user.passages.id(_id).remove();
+            user.save()
+                .then(() => res.sendStatus(200))
+                .catch((err) => console.error(err));
+        })
+        .catch((err) => console.error(err));
 });
 
-app.delete('/passages/:id', (req, res) => {
-    let id = Number(req.params.id);
+// app.patch('/setCurrentPassage/:id', (req, res) => {
+//     let id = Number(req.params.id);
+//     let passages;
 
-    let params = {
-        TableName: req.session.userID,
-        Key: {
-            'id': id,
-        }
-    }
+//     let allParams = {
+//         TableName: req.session.userID
+//     };
 
-    console.log("Deleting passage " + id)
-    docClient.delete(params, function (err, data) {
-        if (err) {
-            console.error("Unable to get item. Error JSON:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("Success!");
-            res.sendStatus(200);
-        }
-    });
-})
+//     console.log("Getting passages...");
 
-app.patch('/setCurrentPassage/:id', (req, res) => {
-    let id = Number(req.params.id);
-    let passages;
+//     docClient.scan(allParams, function (err, data) {
+//         if (err) {
+//             console.error("Unable to scan items. Error JSON:", JSON.stringify(err, null, 2));
+//         } else {
+//             console.log("Success!");
+//             var databasePromises = [];
+//             data.Items.map(function (passage) {
+//                 let isCurrentPassage = 1 ? passage.id == id : 0;
+//                 let params = {
+//                     TableName: req.session.userID,
+//                     Key: {
+//                         'id': passage.id
+//                     },
+//                     UpdateExpression: "set currentPassage = :i",
+//                     ExpressionAttributeValues: {
+//                         ":i": isCurrentPassage
+//                     },
+//                 }
 
-    let allParams = {
-        TableName: req.session.userID
-    };
+//                 databasePromises.push(docClient.update(params).promise());
+//             });
+//             Promise.all(databasePromises)
+//                 .then(responses => {
+//                     res.sendStatus(200);
+//                 })
+//                 .catch(err => {
+//                     console.error('Problem in DB calls');
+//                     res.sendStatus(500);
+//                 });
+//         }
+//     });
 
-    console.log("Getting passages...");
+// });
 
-    docClient.scan(allParams, function (err, data) {
-        if (err) {
-            console.error("Unable to scan items. Error JSON:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("Success!");
-            var databasePromises = [];
-            data.Items.map(function (passage) {
-                let isCurrentPassage = 1 ? passage.id == id : 0;
-                let params = {
-                    TableName: req.session.userID,
-                    Key: {
-                        'id': passage.id
-                    },
-                    UpdateExpression: "set currentPassage = :i",
-                    ExpressionAttributeValues: {
-                        ":i": isCurrentPassage
-                    },
-                }
-
-                databasePromises.push(docClient.update(params).promise());
-            });
-            Promise.all(databasePromises)
-                .then(responses => {
-                    res.sendStatus(200);
-                })
-                .catch(err => {
-                    console.error('Problem in DB calls');
-                    res.sendStatus(500);
-                });
-        }
-    });
-
-})
-
-app.listen(process.env.PORT || 8081,() => {
-  console.log('App started successfully!')
-})
+app.listen(process.env.PORT || 8081, () => {
+    console.log('App started successfully!')
+});

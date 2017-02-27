@@ -1,5 +1,5 @@
 export interface Passage {
-    id: number,
+    _id: number,
     title: string,
     text: string,
     mastered: boolean,

@@ -30,8 +30,8 @@ export class PassagesService {
       });
   }
 
-  getPassage(id: number): Promise<Passage> {
-    return this.http.get(this.prefix + "/passages/" + id.toString())
+  getPassage(_id: number): Promise<Passage> {
+    return this.http.get(this.prefix + "/passages/" + _id.toString())
       .toPromise()
       .then((res) => {
         return res.json();
@@ -45,7 +45,7 @@ export class PassagesService {
         let nextId: number = passages.length + 1;
 
         let passageToAdd: Passage = {
-          id: nextId,
+          _id: nextId,
           title: title,
           text: text,
           mastered: false,
@@ -70,9 +70,9 @@ export class PassagesService {
     });
   }
 
-  deletePassage(id: number): Promise<Response> {
+  deletePassage(_id: number): Promise<Response> {
     return this.http
-      .delete(this.prefix + '/passages/' + id.toString())
+      .delete(this.prefix + '/passages/' + _id.toString())
       .toPromise();
   }
 }

@@ -29,7 +29,7 @@ export class PassagesPage {
     console.log("Clicked!  Showing passage", passage);
     this.navCtrl.push(PassagePage, {
       passage: passage,
-      id: passage.id
+      _id: passage._id
     });
   }
 

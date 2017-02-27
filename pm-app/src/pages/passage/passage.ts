@@ -45,7 +45,7 @@ export class PassagePage {
         {
           text: 'Yes',
           handler: () => {
-            this.passagesService.deletePassage(this.passage.id)
+            this.passagesService.deletePassage(this.passage._id)
               .then((res: any) => {
                 this.navCtrl.push(PassagesPage);
               })
@@ -59,7 +59,7 @@ export class PassagePage {
   playGame() {
     this.navCtrl.push(GamePage, {
       passage: this.passage,
-      id: this.passage.id
+      _id: this.passage._id
     })
   }
 }

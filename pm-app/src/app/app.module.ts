@@ -22,9 +22,9 @@ import { GamePage } from '../pages/game/game';
   imports: [
     IonicModule.forRoot(MyApp, {}, {
       links: [{ component: PassagesPage, name: 'Passages', segment: 'passages' },
-      {component: PassagePage, name: 'Passage', segment: 'passages/:id' },
+      {component: PassagePage, name: 'Passage', segment: 'passages/:_id' },
       {component: AddPassagePage, name: 'Add Passage', segment: 'addPassage' },
-      {component: GamePage, name: "Play Game", segment: 'playGame/:id'}]
+      {component: GamePage, name: "Play Game", segment: 'playGame/:_id'}]
     }),
     BrowserModule,
     FormsModule,
