@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Observable } from "RxJS/Rx";
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
@@ -26,7 +25,7 @@ export class PassagesService {
 	private dates = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
 									 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 									 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
-	private frequencyChoices = {days: this.days, oddeven: this.oddeven, dates: this.dates};
+	private frequencyChoices = {weekday: this.days, oddeven: this.oddeven, date: this.dates};
 
   getPassages(): Promise<Passage[]> {
     return this.http.get(this.prefix + "/passages")
@@ -128,7 +127,8 @@ export class PassagesService {
 				for (let category of Object.keys(sortedPassages).slice(1)) {
 
 					if (sortedPassages[category].length > 0) {
-            console.log(sortedPassages[category])
+            console.log(category);
+            console.log(passageToModify);
 						let newPassage = sortedPassages[category][0]; //Select first (oldest) passage in category
 						passageToModify.reviewFrequency = newPassage.reviewFrequency;
 						promises.push(
@@ -138,6 +138,8 @@ export class PassagesService {
 						passageToModify = newPassage;
 
 					} else { //No passages in this category, can't move anything else up a category
+            console.log(category);
+            console.log(this.frequencyChoices);
 						let newPassage = {reviewFrequency: null};
 						newPassage.reviewFrequency = this._random(this.frequencyChoices[category]);
 						promises.push(

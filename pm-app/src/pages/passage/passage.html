@@ -13,11 +13,14 @@
 </ion-header>
 
 <ion-content padding>
-{{passage.text}}
-<br/>
-<br/>
-<button ion-button (click)="playGame()" color="primary" class="button button-block">Review</button>
-<br/>
-<button ion-button (click)="master()" color="primary" class="button button-block" *ngIf="reviewFrequency=='daily">Mark as Mastered</button>
-<br/>
-<button ion-button (click)="delete()" color="danger" class="button button-block">Delete</button>
+  {{passage.text}}
+  <br/>
+  <br/>
+  <button ion-button (click)="playGame()" color="primary" class="button button-block">Review</button>
+  <div *ngIf="passage.reviewFrequency=='daily'">
+    <br/>
+    <button ion-button (click)="master()" color="primary" class="button button-block"> Mark as Mastered</button>
+  </div>
+  <br/>
+  <button ion-button (click)="delete()" color="danger" class="button button-block">Delete</button>
+</ion-content>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { PassagesService } from '../../providers/passages.service';
@@ -19,7 +19,7 @@ import { AddPassagePage } from '../add-passage/add-passage'
 
 export class AllPassagesPage {
   public sortedPassages: any;
-  
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private passagesService: PassagesService) {
     this.passagesService.getPassages()
     .then ((passages: Passage[]) => {

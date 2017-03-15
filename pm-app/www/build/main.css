@@ -21275,3 +21275,18 @@ sub {
     padding-top: calc(16px + 20px);
   }
 }
+
+page-all-passages ion-list-header {
+  font-weight: bold;
+  color: black;
+}
+
+page-passages aside {
+  color: #888888;
+  text-align: center;
+  font-size: 10px;
+}
+
+page-passages aside a {
+  color: #888888;
+}

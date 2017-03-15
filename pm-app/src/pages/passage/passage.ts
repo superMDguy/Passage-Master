@@ -4,7 +4,6 @@ import { AlertController } from 'ionic-angular';
 
 import { Passage } from '../../models/passage-model';
 import { PassagesService } from '../../providers/passages.service';
-import { PassagesPage } from '../passages/passages';
 import { GamePage } from '../game/game';
 
 /*
@@ -38,16 +37,14 @@ export class PassagePage {
       buttons: [
         {
           text: 'No',
-          handler: () => {
-            console.log('Disagree clicked');
-          }
+          handler: () => { }
         },
         {
           text: 'Yes',
           handler: () => {
             this.passagesService.deletePassage(this.passage._id)
               .then((res: any) => {
-                this.navCtrl.push(PassagesPage);
+                this.navCtrl.pop(); //Go back to all passages page
               });
           }
         }
@@ -58,9 +55,9 @@ export class PassagePage {
 
   master() {
     this.passagesService.master(this.passage._id)
-			.then((res: any) => {
-				this.navCtrl.push(PassagesPage);
-			});
+      .then((res: any) => {
+        this.navCtrl.pop(); //Go back to all passages page
+      });
   }
 
   playGame() {

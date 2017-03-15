@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { PassagesService } from '../../providers/passages.service';
-import { Passage } from '../../models/passage-model';
 import { PassagesPage } from '../passages/passages';
 
 /*

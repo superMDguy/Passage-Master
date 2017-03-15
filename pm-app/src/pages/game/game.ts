@@ -1,8 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { Passage } from '../../models/passage-model';
-import { PassagesService } from '../../providers/passages.service';
 /*
   Generated class for the Game page.
 
