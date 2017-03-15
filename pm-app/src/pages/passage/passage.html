@@ -18,5 +18,6 @@
 <br/>
 <button ion-button (click)="playGame()" color="primary" class="button button-block">Review</button>
 <br/>
-<button ion-button (click)="delete()" color="assertive" class="button button-block">Delete</button>
-
+<button ion-button (click)="master()" color="primary" class="button button-block" *ngIf="reviewFrequency=='daily">Mark as Mastered</button>
+<br/>
+<button ion-button (click)="delete()" color="danger" class="button button-block">Delete</button>

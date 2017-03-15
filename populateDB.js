@@ -1,15 +1,3 @@
-var AWS = require("aws-sdk");
-var fs = require('fs');
-
-AWS.config.update({
-  region: "us-west-2",
-  endpoint: "https://dynamodb.us-west-2.amazonaws.com/"
-});
-
-var docClient = new AWS.DynamoDB.DocumentClient();
-
-console.log("Importing passages into DynamoDB. Please wait.");
-
 var allPassages = JSON.parse(fs.readFileSync('passages.json', 'utf8')).passages;
 allPassages.forEach(function(passage) {
     var params = {

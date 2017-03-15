@@ -18,11 +18,11 @@ import { AddPassagePage } from '../add-passage/add-passage'
 })
 
 export class PassagesPage {
-  @Input() passages: Array<Passage>;
+  public passages: Passage[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private passagesService: PassagesService) {
-    this.passagesService.getPassages()
-    .then ((passages: Array<Passage>) => this.passages = passages);
+    this.passagesService.getPassagesForToday()
+    .then ((passages: Passage[]) => this.passages = passages);
   }
 
   itemTapped(event, passage) {

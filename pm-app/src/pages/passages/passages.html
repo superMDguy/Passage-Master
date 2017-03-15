@@ -1,18 +1,13 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Your Passages</ion-title>
+    <ion-title>Today's Passages</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf=passages>
   <ion-list>
     <button ion-item *ngFor="let passage of passages" (click)="itemTapped($event, passage)">
-      <strong *ngIf = "passage.currentPassage==true">
-				{{passage.title}}
-				</strong>
-			 <div *ngIf = "passage.currentPassage != true">
 			 {{passage.title}}
-			 </div>
     </button>
   </ion-list>
   <ion-fab right bottom>

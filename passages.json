@@ -1,48 +1,33 @@
-{
+
   "passages": [
     {
-      "mastered": 0,
-      "text": "Cease to be idle; cease to be unclean; cease to find fault one with another; cease to sleep longer than is needful; retire to thy bed early, that ye may not be weary; arise early, that your bodies and your minds may be invigorated.",
-      "id": 1,
-      "currentPassage": 0,
-      "reviewed": 25,
+      "text": "Cease to be _idle; cease to be unclean; cease to find fault one with another; cease to sleep longer than is needful; retire to thy bed early, that ye may not be weary; arise early, that your bodies and your minds may be invigorated.",
+      "_id": 1,
       "title": "D&C 88:124",
       "group": "daily"
     },
     {
-      "mastered": 0,
       "text": "And behold, he shall be born of Mary, at Jerusalem which is the land of our forefathers, she being a virgin, a precious and chosen vessel, who shall be overshadowed and conceive by the power of the Holy Ghost, and bring forth a son, yea, even the Son of God.",
-      "id": 2,
-      "currentPassage": 0,
-      "reviewed": 0,
+      "_id": 2,
       "title": "Alma 7:10",
       "group": "daily"
     },
     {
-      "mastered": 0,
       "text": "And whatsoever they shall speak when moved upon by the Holy Ghost shall be scripture, shall be the will of the Lord, shall be the mind of the Lord, shall be the word of the Lord, shall be the voice of the Lord, and the power of God unto salvation.",
-      "id": 3,
-      "currentPassage": 0,
-      "reviewed": 1,
+      "_id": 3,
       "title": "D&C 68:4",
       "group": "daily"
     },
     {
-      "id": 4,
+      "_id": 4,
       "title": "Moroni 7:45",
       "text": "And charity suffereth long, and is kind, and envieth not, and is not puffed up, seeketh not her own, is not easily provoked, thinketh no evil, and rejoiceth not in iniquity but rejoiceth in the truth, beareth all things, believeth all things, hopeth all things, endureth all things.",
-      "mastered": 0,
-      "currentPassage": 0,
-      "reviewed": 17,
       "group": "daily"
     },
     {
-      "id": 5,
+      "_id": 5,
       "title": "The Golden Rule",
       "text": "Do unto others as you would have others do unto you.",
-      "mastered": 0,
-      "currentPassage": 0,
-      "reviewed": 66,
       "group": "daily"
     }
   ]

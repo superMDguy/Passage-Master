@@ -48,12 +48,19 @@ export class PassagePage {
             this.passagesService.deletePassage(this.passage._id)
               .then((res: any) => {
                 this.navCtrl.push(PassagesPage);
-              })
+              });
           }
         }
       ]
     });
     confirm.present();
+  }
+
+  master() {
+    this.passagesService.master(this.passage._id)
+			.then((res: any) => {
+				this.navCtrl.push(PassagesPage);
+			});
   }
 
   playGame() {
