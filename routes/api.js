@@ -30,10 +30,10 @@ app.post('/passages', function (req, res) {
     User.findById(req.session.userID).exec()
         .then((user) => {
             user.passages.push(passage);
-            user.save()
-                .then(() => res.sendStatus(200))
-                .catch((err) => console.error(err));
-        });
+            return user.save()
+        })
+        .then(() => res.sendStatus(200))
+        .catch((err) => console.error(err));
 });
 
 app.put('/passages/:_id', (req, res) => {
@@ -43,10 +43,9 @@ app.put('/passages/:_id', (req, res) => {
         .then((user) => {
             let passageToModify = user.passages.id(_id);
 			passageToModify.reviewFrequency = req.body.reviewFrequency;
-			user.save()
-				.then(() => res.sendStatus(200))
-				.catch((err) => console.error(err));
+			return user.save()
         })
+        .then(() => res.sendStatus(200))
         .catch((err) => console.error(err));
 });
 
@@ -56,10 +55,9 @@ app.delete('/passages/:_id', (req, res) => {
     User.findById(req.session.userID).exec()
         .then((user) => {
             let passageToRemove = user.passages.id(_id).remove();
-            user.save()
-                .then(() => res.sendStatus(200))
-                .catch((err) => console.error(err));
+            return user.save();
         })
+        .then(() => res.sendStatus(200))
         .catch((err) => console.error(err));
 });
 

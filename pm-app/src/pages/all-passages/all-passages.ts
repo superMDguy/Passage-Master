@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { PassagesService } from '../../providers/passages.service';
@@ -18,14 +18,16 @@ import { AddPassagePage } from '../add-passage/add-passage'
 })
 
 export class AllPassagesPage {
-  public sortedPassages: any;
+  @Input() sortedPassages: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private passagesService: PassagesService) {
-    this.passagesService.getPassages()
-    .then ((passages: Passage[]) => {
-        this.sortedPassages = passagesService.sortPassagesByReviewType(passages);
-        console.log(this.sortedPassages);
-    });
+  constructor(public navCtrl: NavController, public navParams: NavParams, private passagesService: PassagesService) { }
+
+  ionViewCanEnter(): Promise<boolean> {
+    return this.passagesService.getPassages()
+      .then((passages: Passage[]) => {
+        this.sortedPassages = this.passagesService.sortPassagesByReviewType(passages);
+        return true;
+      });
   }
 
   itemTapped(event, passage) {

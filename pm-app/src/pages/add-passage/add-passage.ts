@@ -27,6 +27,5 @@ export class AddPassagePage {
       .then((res: any) => {
         this.navCtrl.push(PassagesPage)
       })
-
   }
 }

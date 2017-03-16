@@ -5,6 +5,7 @@ import { AlertController } from 'ionic-angular';
 import { Passage } from '../../models/passage-model';
 import { PassagesService } from '../../providers/passages.service';
 import { GamePage } from '../game/game';
+import { PassagesPage } from '../passages/passages';
 
 /*
   Generated class for the Passage page.
@@ -56,7 +57,7 @@ export class PassagePage {
   master() {
     this.passagesService.master(this.passage._id)
       .then((res: any) => {
-        this.navCtrl.pop(); //Go back to all passages page
+        this.navCtrl.push(PassagesPage)
       });
   }
 

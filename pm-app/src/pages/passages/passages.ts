@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { PassagesService } from '../../providers/passages.service';
@@ -18,11 +18,17 @@ import { AddPassagePage } from '../add-passage/add-passage'
 })
 
 export class PassagesPage {
-  public passages: Passage[];
+  @Input() passages: Passage[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private passagesService: PassagesService) {
-    this.passagesService.getPassagesForToday()
-    .then ((passages: Passage[]) => this.passages = passages);
+  constructor(public navCtrl: NavController, public navParams: NavParams, private passagesService: PassagesService) { }
+
+  ionViewCanEnter(): Promise<boolean> {
+    return this.passagesService.getPassagesForToday()
+      .then((passages: Passage[]) => {
+        this.passages = passages;
+        return true;
+      }
+      );
   }
 
   itemTapped(event, passage) {
