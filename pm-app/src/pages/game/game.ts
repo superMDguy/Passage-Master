@@ -40,12 +40,12 @@ constructor(public navCtrl: NavController, public navParams: NavParams) {
     console.log(this)
     let randomIndex = Math.floor((Math.random() * (this.words.length - 1)) + 1);
     this.text = this.words.slice(0, randomIndex).join(" "); //All words up to a random index
-    this.correctAnswer = this.removePunctuation(this.words[randomIndex]);
+    this.correctAnswer = this.removePunctuation(this.words[randomIndex]).trim();
     this.answer = null;
   }
 
   check() {
-    if (this.answer == this.correctAnswer) {
+    if (this.answer.toLowerCase() == this.correctAnswer.toLowerCase()) {
       this.color = "#00FF00";
       setTimeout(() => this.nextQuestion(), 1000);
     }
