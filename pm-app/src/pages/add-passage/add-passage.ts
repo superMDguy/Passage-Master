@@ -25,7 +25,7 @@ export class AddPassagePage {
   add() {
     this.passagesService.addPassage(this.title, this.text)
       .then((res: any) => {
-        this.navCtrl.push(PassagesPage)
+        this.navCtrl.pop()
       })
   }
 }

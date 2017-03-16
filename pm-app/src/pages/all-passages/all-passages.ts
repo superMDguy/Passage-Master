@@ -4,7 +4,6 @@ import { NavController, NavParams } from 'ionic-angular';
 import { PassagesService } from '../../providers/passages.service';
 import { Passage } from '../../models/passage-model';
 import { PassagePage } from '../passage/passage';
-import { AddPassagePage } from '../add-passage/add-passage'
 /*
   Generated class for the Passages page.
 
