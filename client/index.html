@@ -41,13 +41,12 @@
 			we decided to create an online app that would help anyone memorize <strong>anything</strong>.  With Passage
 			Master, you can memorize, <strong>and not forget</strong>
 			<ul>
-				<li>Passages from the Bible, Quran, Torah, Vedas, or other holy texts</li>
+				<li>Passages from the Bible, Quran, Book of Mormon, or other holy texts</li>
 				<li>Poems, hymns, or songs</li>
 				<li>Passages from books you love</li>
 				<li>Literally anything else you can copy and paste</li>
 			</ul>
-			Once you add your passages to Passage Master, they'll be part of a permanent list of passages that you can
-			cherish for a lifetime.
+			Once you add your passages to Passage Master, they'll be part of a permanent list of passages, and added into the automatic review cycle.  You'll review each passage at least once a month, depending on how well you know it.  And you'll only need to spend about 5-10 minutes each day!
 		</p>
 	</article>
 
@@ -118,7 +117,7 @@
 	<script>
 		var lock = new Auth0Lock('oGWG8kjBrjKf6biSPhEwMXdrWRvWEyqt', 'supermdguy.auth0.com', {
 			auth: {
-				redirectUrl: 'http://passagemaster.com/auth0/callback',
+				redirectUrl: 'http://localhost:8081/auth0/callback',
 				responseType: 'code',
 				params: {
 					scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
