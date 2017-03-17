@@ -1,6 +1,5 @@
 # Passage Master
-Using Passage Master, you can memorize anything.
+Using Passage Master, you can memorize anything.  It's based off of the Charlotte Mason memorization/review methodology.
 
-##Usage
-Passage Master relies on [json-server](https://www.npmjs.com/package/json-server), which you can install with `npm install -g json-server`.
-To start the app, navigate to the root directory of the project, and run `json-server server/passages.json --static ./client`.  Then, go to `localhost:3000` in a web browser.
+## About
+Passage Master was developed using Ionic 2 on the front end, and Node + MongoDB (using Mongoose) on the backend.  It's deployed to heroku, and uses mLab MongoDB for database hosting.  It has a homepage (`client/index.html`) based on a TEMPLATED template.  It uses Auth0 Lock for authentication, and Google Analytics for analytics.
