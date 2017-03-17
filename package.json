@@ -1,6 +1,6 @@
 {
   "name": "passage-master",
-  "version": "0.2.2",
+  "version": "0.9.1",
   "description": "Memorize anything",
   "main": "server.js",
   "scripts": {

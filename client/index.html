@@ -117,7 +117,7 @@
 	<script>
 		var lock = new Auth0Lock('oGWG8kjBrjKf6biSPhEwMXdrWRvWEyqt', 'supermdguy.auth0.com', {
 			auth: {
-				redirectUrl: 'http://passagemaster.com/auth0/callback',
+				redirectUrl: 'http://localhost:8081/auth0/callback',
 				responseType: 'code',
 				params: {
 					scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
@@ -126,7 +126,8 @@
 			socialButtonStyle: 'small',
 			theme: {
 				primaryColor: '#12B28F',
-				logo: 'images/logo.jpg'
+				logo: 'images/logo.jpg',
+				labeledSubmitButton: false
 			},
 			languageDictionary: {
 				title: "Sign in"

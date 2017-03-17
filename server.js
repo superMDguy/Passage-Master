@@ -36,7 +36,7 @@ db.once('open', function () {
 
 exports.User = User;
 
-const prefix = "http://passagemaster.com"
+const prefix = "http://localhost:8081"
 exports.prefix = prefix;
 
 let app = express();
