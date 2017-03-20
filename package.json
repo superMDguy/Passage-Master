@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "postinstall": "sed -i 's/localhost:8081/passagemaster.com/g' client/index.html ./server.js"
+    "postinstall": "bash ../build.sh"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "express-session": "^1.15.0",
     "google-auth-library": "^0.10.0",
     "jsonwebtoken": "^7.2.1",
+    "minifier": "^0.8.1",
     "mongodb": "^2.2.24",
     "mongoose": "^4.8.4",
     "request": "^2.79.0",
