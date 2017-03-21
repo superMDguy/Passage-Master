@@ -26,12 +26,13 @@ export class GamePage {
     return punctuationless.replace(/\s{2,}/g, " ");
   }
 
-constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ngOnInit() {
     this.passage = this.navParams.get('passage');
-    this.words = this.passage.text.split(" ");
+    //Remove extra spaces, then split into words
+    this.words = this.passage.text.replace(/ +(?= )/g, '').split(" ");
     this.nextQuestion();
   }
 
@@ -39,13 +40,22 @@ constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.color = "#000000"
     console.log(this)
     let randomIndex = Math.floor((Math.random() * (this.words.length - 1)) + 1);
-    this.text = this.words.slice(0, randomIndex).join(" "); //All words up to a random index
-    this.correctAnswer = this.removePunctuation(this.words[randomIndex]).trim();
+    this.text = this.words.slice(0, randomIndex)
+      .join(" "); //All words up to a random index
+    this.correctAnswer = this.words[randomIndex];
     this.answer = null;
   }
 
+  areEqual(str1: string, str2: string): boolean {
+    if (str1 && str2) {
+      return this.removePunctuation(str1).trim().toUpperCase()
+        == this.removePunctuation(str2).trim().toUpperCase();
+    }
+    return false;
+  }
+
   check() {
-    if (this.answer.toLowerCase() == this.correctAnswer.toLowerCase()) {
+    if (this.areEqual(this.answer, this.correctAnswer)) {
       this.color = "#00FF00";
       setTimeout(() => this.nextQuestion(), 1000);
     }
