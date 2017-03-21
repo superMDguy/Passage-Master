@@ -26,17 +26,18 @@ export class PassagesService {
     11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
     21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
   private frequencyChoices = { weekday: this.days, oddeven: this.oddeven, date: this.dates };
+  private nextCategory = { daily: 'oddeven', oddeven: 'weekday', weekday: 'date' };
 
   getPassages(): Promise<Passage[]> {
     // if (this.cachedPassages.length > 0) {
-      // return new Promise((resolve, reject) => { resolve(this.cachedPassages) });
+    // return new Promise((resolve, reject) => { resolve(this.cachedPassages) });
     // } else {
-      return this.http.get(this.prefix + "/passages")
-        .toPromise()
-        .then((res) => {
-          this.cachedPassages = res.json();
-          return res.json();
-        });
+    return this.http.get(this.prefix + "/passages")
+      .toPromise()
+      .then((res) => {
+        this.cachedPassages = res.json();
+        return res.json();
+      });
     // }
   }
 
@@ -65,10 +66,8 @@ export class PassagesService {
   }
 
   getPassagesForToday(): Promise<Passage[]> {
-    return this.http.get(this.prefix + "/passages")
-      .toPromise()
-      .then((res) => {
-        let body = res.json();
+    return this.getPassages()
+      .then((body) => {
         return body.filter((passage) => {
           return this.shouldShowPassage(passage.reviewFrequency);
         });
@@ -116,12 +115,8 @@ export class PassagesService {
     return this.getPassages().then((passages) => {
       let sortedPassages = this.sortPassagesByReviewType(passages);
 
-      //				let totalLength = passages.length;
-      //				let idealLength = (totalLength / (Object.keys(sortedPassages).length)); //Ideal # of passages per section
-
       let promises = [];
 
-      var passageToModify: any = null;
       for (let passage of sortedPassages.daily) {
         if (passage._id == _id) {
           var passageToModify = passage;
@@ -129,24 +124,15 @@ export class PassagesService {
       }
 
       for (let category of Object.keys(sortedPassages).slice(1)) {
+        passageToModify.reviewFrequency = this._random(this.frequencyChoices[category]);
+        promises.push(
+          this.http.put(this.prefix + "/passages/" + passageToModify._id.toString(), passageToModify)
+            .toPromise()
+        );
 
         if (sortedPassages[category].length > 0) {
-          let newPassage = sortedPassages[category][0]; //Select first (oldest) passage in category
-          passageToModify.reviewFrequency = newPassage.reviewFrequency;
-          promises.push(
-            this.http.put(this.prefix + "/passages/" + _id.toString(), passageToModify)
-              .toPromise()
-          );
-          passageToModify = newPassage;
-
+          passageToModify = sortedPassages[category][0]; //Select first (oldest) passage in category
         } else { //No passages in this category, can't move anything else up a category
-          let newPassage = { reviewFrequency: null };
-          newPassage.reviewFrequency = this._random(this.frequencyChoices[category]);
-          promises.push(
-            this.http.put(this.prefix + "/passages/" + _id.toString(), newPassage)
-              .toPromise()
-          );
-
           break;
         }
 
