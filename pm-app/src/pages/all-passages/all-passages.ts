@@ -30,7 +30,6 @@ export class AllPassagesPage {
   }
 
   itemTapped(event, passage) {
-    console.log("Clicked!  Showing passage", passage);
     this.navCtrl.push(PassagePage, {
       passage: passage,
       _id: passage._id

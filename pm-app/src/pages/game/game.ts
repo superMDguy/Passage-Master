@@ -38,7 +38,6 @@ export class GamePage {
 
   nextQuestion() {
     this.color = "#000000"
-    console.log(this)
     let randomIndex = Math.floor((Math.random() * (this.words.length - 1)) + 1);
     this.text = this.words.slice(0, randomIndex)
       .join(" "); //All words up to a random index
