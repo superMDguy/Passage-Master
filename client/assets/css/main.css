@@ -1160,7 +1160,8 @@
 	#main {
 		padding-left: 3%;
 		padding-right: 3%;
-		margin: auto;
+		max-width: 800px;
+		margin: 0 auto;
 	}
 
 /* Footer */
