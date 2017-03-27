@@ -44,7 +44,7 @@ app.use('/api', require('./routes/api.js'))
 app.use('/auth0', require('./routes/auth.js'))
 
 app.use(express.static('client'));
-app.use(express.static('pm-app/www'))
+app.use(express.static('app/www'))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieSession({
@@ -57,7 +57,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/app/', function (req, res) {
-    res.sendFile("pm-app/www/index.html", { root: __dirname });
+    res.sendFile("app/www/index.html", { root: __dirname });
 });
 
 app.listen(process.env.PORT || 8081, () => {

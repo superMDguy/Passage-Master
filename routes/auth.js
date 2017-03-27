@@ -37,22 +37,22 @@ app.get('/callback', (req, res) => {
     rp(options)
         .then((body) => {
             console.log("Processing authorization code...");
-            rp(`https://supermdguy.auth0.com/userinfo/?access_token=${body.access_token}`).then((userInfo) => {
-                userInfo = JSON.parse(userInfo);
-                req.session.userID = userInfo.user_id.toString();
-                User.findById(req.session.userID).exec()
-                    .then((user) => {
-                        if (!user) { //User doesn't exist, create an entry for it
-                            let emptyUser = new User({ _id: req.session.userID, name: userInfo.name, passages: [] });
-                            emptyUser.save()
-                                .then(() => res.redirect('/app'))
-                                .catch((err) => console.error(err));
-                        } else {
-                            res.redirect('/app')
-                        }
-                    })
+            return rp(`https://supermdguy.auth0.com/userinfo/?access_token=${body.access_token}`)
+        })
+        .then((userInfo) => {
+            userInfo = JSON.parse(userInfo);
+            req.session.userID = userInfo.user_id.toString();
+            return User.findById(req.session.userID).exec()
+        })
+        .then((user) => {
+            if (!user) { //User doesn't exist, create an entry for it
+                let emptyUser = new User({ _id: req.session.userID, name: userInfo.name, passages: [] });
+                emptyUser.save()
+                    .then(() => res.redirect('/app'))
                     .catch((err) => console.error(err));
-            });
+            } else {
+                res.redirect('/app')
+            }
         })
         .catch((err) => console.error(err))
 });
