@@ -21,9 +21,10 @@ export class GamePage {
   color: string;
   correctAnswer: string;
 
-  removePunctuation(s: string): string {
+  clean(s: string): string {
     let punctuationless = s.replace(/[.,\/#!$%\^&\*\?;:{}=\-_`~()]/g, "");
-    return punctuationless.replace(/\s{2,}/g, " ");
+    let noVerses = punctuationless.replace(/\n\d+/g, "\n"); //Filter out verse numbers
+    return noVerses.replace(/\s{2,}/g, " ");
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
@@ -47,8 +48,8 @@ export class GamePage {
 
   areEqual(str1: string, str2: string): boolean {
     if (str1 && str2) {
-      return this.removePunctuation(str1).trim().toUpperCase()
-        == this.removePunctuation(str2).trim().toUpperCase();
+      return this.clean(str1).trim().toUpperCase()
+        == this.clean(str2).trim().toUpperCase();
     }
     return false;
   }
