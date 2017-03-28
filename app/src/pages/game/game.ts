@@ -42,7 +42,7 @@ export class GamePage {
     let randomIndex = Math.floor((Math.random() * (this.words.length - 1)) + 1);
     this.text = this.words.slice(0, randomIndex)
       .join(" "); //All words up to a random index
-    this.correctAnswer = this.words[randomIndex];
+    this.correctAnswer = this.clean(this.words[randomIndex]).trim();
     this.answer = null;
   }
 
@@ -56,8 +56,14 @@ export class GamePage {
 
   check() {
     if (this.areEqual(this.answer, this.correctAnswer)) {
-      this.color = "#00FF00";
+      this.color = "#32db64"; //Green (secondary in variables.css)
       setTimeout(() => this.nextQuestion(), 1000);
     }
+  }
+
+  skip() {
+    this.answer = this.correctAnswer;
+    this.color = "#f53d3d"; //Red (danger in variables.css)
+    setTimeout(() => this.nextQuestion(), 1000);
   }
 }
