@@ -56,7 +56,7 @@ export class GamePage {
 
   check() {
     if (this.areEqual(this.answer, this.correctAnswer)) {
-      this.color = "#32db64"; //Green (secondary in variables.css)
+      this.color = "#12B28F"; //Green (Same color as header bar)
       setTimeout(() => this.nextQuestion(), 1000);
     }
   }
