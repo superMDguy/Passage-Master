@@ -6,3 +6,5 @@ node_modules/
 !.elasticbeanstalk/*.global.yml
 
 local-db/
+
+dist.md
