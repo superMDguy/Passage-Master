@@ -18,13 +18,13 @@ var passageSchema = new Schema({
     reviewFrequency: String,
     //Review Frequency is either odd/even, day of a week, or date of a month
     created: Date,
-});
+}, { usePushEach: true });
 
 var userSchema = new Schema({
     name: String,
     _id: String,
     passages: [passageSchema]
-});
+}, { usePushEach: true });
 
 var User = mongoose.model('User', userSchema)
 
